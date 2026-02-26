@@ -1,0 +1,52 @@
+:root {
+  --primary: #355E3B;
+  --primary-dark: #2b4a2f;
+  --background: #E4EBE4;
+  --text-dark: #333;
+  --white: #ffffff;
+} 
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #e8e8e8;
+  font-family: Arial, sans-serif;
+  color: var(--text-dark);
+}
+
+html, body, #root {
+  width: 100% !important;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; 
+}
+
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+  width: 100%;
+}
+
+.page-container {
+  padding: 30px;
+  width: 100%;
+  max-width: 1200px; 
+  margin: 0 auto;
+}

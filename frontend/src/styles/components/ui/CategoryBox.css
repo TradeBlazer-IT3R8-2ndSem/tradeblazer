@@ -1,0 +1,13 @@
+.category-box {
+  background-color: white;
+  padding: 15px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-weight: 500;
+}
+
+.category-box:hover {
+  background-color: #355e3b;
+  color: white;
+}
