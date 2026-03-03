@@ -1,0 +1,145 @@
+.chat-box {
+  position: fixed;
+  bottom: 90px;
+  right: 25px;
+  width: 650px;
+  height: 450px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 10000;
+}
+
+/* TOP HEADER */
+.chat-top-header {
+  background-color: #355e3b;
+  color: white;
+  padding: 12px;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* SUB HEADER (ROW WITH 2 COLUMNS) */
+.chat-sub-header {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  background: #f5f5f5;
+}
+
+.sub-left {
+  width: 200px;
+  padding: 10px;
+  font-weight: bold;
+  border-right: 1px solid #ddd;
+}
+
+.sub-right {
+  flex: 1;
+  padding: 10px;
+  font-weight: bold;
+}
+
+/* BODY AREA */
+.chat-body {
+  flex: 1;
+  display: flex;
+}
+
+/* LEFT COLUMN */
+.chat-users {
+  width: 200px;
+  border-right: 1px solid #ddd;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.user-item {
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.user-item:hover {
+  background: #e0e0e0;
+}
+
+.user-item.active {
+  background: #355e3b;
+  color: white;
+}
+
+/* RIGHT COLUMN */
+.chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* MESSAGES */
+.chat-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+/* INPUT */
+.chat-input {
+  border: none;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  width: 100%;
+  outline: none;
+}
+
+
+/* INPUT CONTAINER */
+.chat-input-container {
+  display: flex;
+  border-top: 1px solid #ccc;
+}
+
+/* INPUT */
+.chat-input {
+  flex: 1;
+  border: none;
+  padding: 10px;
+  outline: none;
+}
+
+/* SEND BUTTON */
+.send-btn {
+  background-color: #355e3b;
+  color: white;
+  border: none;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.send-btn:hover {
+  background-color: #2d4f30;
+}
+
+/* MESSAGE STYLING */
+.message {
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  max-width: 70%;
+}
+
+.message.user {
+  background-color: #355e3b;
+  color: white;
+  margin-left: auto;
+}
+
+.message.bot {
+  background-color: #e5e5e5;
+  color: black;
+  margin-right: auto;
+}

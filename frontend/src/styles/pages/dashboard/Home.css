@@ -1,21 +1,24 @@
+/* ------------------ Home Container ------------------ */
 .home-container {
-  width: 100%;      
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1400px; /* wider for 5 products */
   margin: auto;
   padding: 30px;
   min-height: 100vh;
 }
 
+/* ------------------ Announcement Banner ------------------ */
 .announcement {
   background-color: white;
-  padding: 25px;
-  border-radius: 12px;
+  padding: 40px;
   font-size: 18px;
   margin-bottom: 30px;
   text-align: center;
   font-weight: 500;
+  width: 100%;
 }
 
+/* ------------------ Sections ------------------ */
 .section {
   margin-bottom: 40px;
 }
@@ -24,39 +27,88 @@
   margin-bottom: 15px;
 }
 
+/* ------------------ Categories ------------------ */
 .category-row {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
 }
 
+/* ------------------ Product Rows (Top 3) ------------------ */
 .product-row {
   display: flex;
   gap: 20px;
-  flex-wrap: wrap;
-  overflow-x: auto; 
-  padding: 10px 5px; 
-  scrollbar-width: none; 
+  flex-wrap: nowrap; /* horizontal scroll */
+  overflow-x: auto;
+  padding: 10px 5px;
+  scrollbar-width: none; /* hide scrollbar on Firefox */
 }
 
-.product-row .product-card {
-  flex: 0 0 auto;
+.product-row::-webkit-scrollbar {
+  display: none; /* hide scrollbar on Chrome/Safari */
 }
 
+/* ------------------ All Products Grid ------------------ */
 .product-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 products per row */
   gap: 20px;
+  justify-content: center; /* centers the grid in the container */
+  padding: 10px 5px;
+}
+
+/* ------------------ Product Card ------------------ */
+.product-card {
+  width: 100%; /* grid controls the width */
+  height: 350px; /* fixed height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Product image */
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Product info */
+.product-card .product-info {
+  padding: 10px;
+  text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ------------------ Responsive ------------------ */
+@media (max-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 per row on smaller screens */
+  }
+}
+
+@media (max-width: 992px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 per row */
+  }
 }
 
 @media (max-width: 768px) {
-  .header-search {
-    width: 100%;
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 per row */
   }
+}
 
-  .product-row,
-  .product-grid,
-  .category-row {
-    flex-direction: column;
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: 1fr; /* 1 per row */
   }
 }

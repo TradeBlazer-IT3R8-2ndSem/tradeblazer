@@ -7,11 +7,41 @@
   color: white;
 }
 
-.header-left .logo {
+/* LEFT SIDE */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo {
   font-size: 20px;
   font-weight: bold;
 }
 
+/* LOGO LINK */
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: white;
+}
+
+/* LOGO IMAGE */
+.logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* LOGO TEXT */
+.logo-text {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* CENTER SEARCH */
 .header-center {
   flex: 1;
   display: flex;
@@ -23,8 +53,10 @@
   padding: 8px 12px;
   border-radius: 8px;
   border: none;
+  outline: none;
 }
 
+/* RIGHT SIDE */
 .header-right {
   display: flex;
   align-items: center;
@@ -42,10 +74,73 @@
   opacity: 0.8;
 }
 
-.post-button {
-  background-color: white;
-  color: #355e3b !important;
-  padding: 6px 14px;
+/* ============================= */
+/* REUSABLE DROPDOWN STYLE */
+/* ============================= */
+
+.dropdown-wrapper {
+  position: relative;
+}
+
+/* Trigger Button */
+.dropdown-trigger {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 10px;
   border-radius: 6px;
-  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.dropdown-trigger:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Dropdown Panel */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 120px;
+  background: white;
+  color: #333;
+  border-radius: 10px;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.18);
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Right aligned dropdown (for My Account) */
+.right-align {
+  right: 0;
+  left: auto;
+}
+
+/* Dropdown Links */
+.dropdown-menu a {
+  padding: 10px 18px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f2f2f2;
+  padding-left: 22px;
+}
+
+/* Smooth animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

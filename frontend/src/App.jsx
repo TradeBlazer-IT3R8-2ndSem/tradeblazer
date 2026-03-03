@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import AppRoutes from './routes/AppRoutes';
+import ChatButton from './components/ui/ChatButton';
 import './styles/global.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         </main>
 
         <Footer />
+        <ChatButton />
       </div>
     </Router>
   );

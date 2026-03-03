@@ -1,13 +1,22 @@
 import { Link } from "react-router-dom";
+import CategoriesDropdown from "../ui/CategoriesDropdown";
+import AccountDropdown from "../ui/AccountDropdown";
 import "../../styles/components/layout/Header.css";
 
 const Header = () => {
   return (
     <header className="header">
+      
+      {/* LEFT SIDE */}
       <div className="header-left">
-        <div className="logo">TradeBlazer</div>
+        <Link to="/dashboard" className="logo-link">
+          <img src="/public/logo.png" alt="TradeBlazer Logo" className="logo-img" />
+          <span className="logo-text">TradeBlazer</span>
+        </Link>
+        <CategoriesDropdown />
       </div>
 
+      {/* CENTER SEARCH */}
       <div className="header-center">
         <input
           type="text"
@@ -16,17 +25,11 @@ const Header = () => {
         />
       </div>
 
+      {/* RIGHT SIDE */}
       <div className="header-right">
-        <Link to="/dashboard">Home</Link>
-        <Link to="/notifications">Notification</Link>
+        <Link to="/notifications">Notifications</Link>
         <Link to="/favorites">Favorites</Link>
-        <Link to="/chat">Chat</Link>
-        <Link to="/support">Help</Link>
-        <Link to="/profile">Profile</Link>
-
-        <Link to="/post/add" className="post-button">
-          + Post Item
-        </Link>
+        <AccountDropdown />
       </div>
     </header>
   );
