@@ -1,9 +1,8 @@
-    // src/routes/AppRoutes.jsx
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Home from '../pages/dashboard/Home';
+import Favorites from "../pages/favorites/Favorites";
 
-// Placeholder components for other pages so it doesn't crash
 const Placeholder = ({ name }) => <div style={{ padding: '20px' }}>{name} Page Coming Soon!</div>;
 
 const AppRoutes = () => {
@@ -12,7 +11,7 @@ const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/dashboard" element={<Home />} />
       <Route path="/notifications" element={<Placeholder name="Notifications" />} />
-      <Route path="/favorites" element={<Placeholder name="Favorites" />} />
+      <Route path="/favorites" element={<Favorites />} /> 
       <Route path="/chat" element={<Placeholder name="Chat" />} />
       <Route path="/support" element={<Placeholder name="Support" />} />
       <Route path="/profile" element={<Placeholder name="Profile" />} />

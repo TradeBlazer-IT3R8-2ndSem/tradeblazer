@@ -6,22 +6,23 @@ import Footer from './components/layout/Footer';
 import AppRoutes from './routes/AppRoutes';
 import ChatButton from './components/ui/ChatButton';
 import './styles/global.css';
+import { FavoritesProvider } from './context/FavoritesContext'; 
 
 function App() {
   return (
-    <Router>
-      <div className="app-wrapper">
-        <Header />
-        
-        {/* The content-area grows to fill all space, pushing footer down */}
-        <main className="content-area">
-          <AppRoutes />
-        </main>
+    <FavoritesProvider> 
+      <Router>
+        <div className="app-wrapper">
+          <Header />
+                    <main className="content-area">
+            <AppRoutes />
+          </main>
 
-        <Footer />
-        <ChatButton />
-      </div>
-    </Router>
+          <Footer />
+          <ChatButton />
+        </div>
+      </Router>
+    </FavoritesProvider>
   );
 }
 

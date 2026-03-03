@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
+import React, { useContext } from "react";
+import { FavoritesContext } from "../../context/FavoritesContext";
 import '../../styles/components/ui/ProductCard.css';
 
 const ProductCard = ({ product }) => {
-  const [isLiked, setIsLiked] = useState(false);
-  const { name, price, image, category } = product;
+  const { favorites, toggleFavorite } = useContext(FavoritesContext);
+
+  const isLiked = favorites.some(p => p.id === product.id); 
 
   return (
     <div className="product-card">
       <div className="card-image">
-        <img src={image || 'https://via.placeholder.com/150'} alt={name} />
-        <button 
-          className={`like-btn ${isLiked ? 'active' : ''}`} 
-          onClick={() => setIsLiked(!isLiked)}
+        <img src={product.image || 'https://via.placeholder.com/150'} alt={product.name} />
+        <button
+          className={`like-btn ${isLiked ? 'active' : ''}`}
+          onClick={() => toggleFavorite(product)}
         >
           {isLiked ? '❤️' : '🤍'}
         </button>
       </div>
       <div className="card-content">
-        <span className="category-tag">{category}</span>
-        <h3>{name}</h3>
-        <p className="price">{price}</p>
+        <span className="category-tag">{product.category}</span>
+        <h3>{product.name}</h3>
+        <p className="price">{product.price}</p>
         <button className="view-btn">View Details</button>
       </div>
     </div>

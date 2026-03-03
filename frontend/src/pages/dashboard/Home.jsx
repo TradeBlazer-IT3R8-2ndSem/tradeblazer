@@ -2,9 +2,12 @@ import Header from "../../components/layout/Header";
 import ProductCard from "../../components/ui/ProductCard";
 import CategoryBox from "../../components/ui/CategoryBox";
 import "../../styles/pages/dashboard/Home.css";
+import { useState } from "react";
+
 
 const Home = () => {
-  const categories = ["Electronics", "Fashion", "Home & Living", "Sports", "Beauty", "Gifts"];
+  const categories = ["Recommended", "Electronics", "Fashion", "Home & Living", "Sports", "Beauty", "Gifts"];
+  const [selectedCategory, setSelectedCategory] = useState("Recommended");
 
   const bestSelling = [
   { id: 1, name: "Ferrero Bouquet", price: "₱1,100", category: "Gifts", image: "https://images.unsplash.com/photo-1549007994-cb92caebd54b?q=80&w=500&auto=format&fit=crop" },
@@ -25,19 +28,22 @@ const allProducts = [
   { id: 12, name: "Sunglasses", price: "₱300", category: "Fashion", image: "https://images.unsplash.com/photo-1549007994-cb92caebd54b?q=80&w=500&auto=format&fit=crop" },
 ];
 
+  const filteredProducts =
+    selectedCategory === "Recommended"
+      ? allProducts
+      : allProducts.filter(
+          (product) => product.category === selectedCategory
+        );
+
   return (
     <>
 
       {/* Announcement Banner */}
         <div className="announcement">
-         <p> diri ang announcement banner </p>
-         <p> ambot </p>
-         <p> pics</p>
-         <p> ambot </p>
-         <p> ambot </p>
-         <p> ambot </p>
-         <p> ambot </p>
-         
+      <img
+        src="public/banner.gif"
+        alt="Announcement Banner"
+      />
     
         </div>
 
@@ -53,26 +59,33 @@ const allProducts = [
           </div>
         </section>
 
-        {/* Categories */}
         <section className="section">
           <h2>Categories</h2>
           <div className="category-row">
             {categories.map((cat, index) => (
-              <CategoryBox key={index} name={cat} />
+              <CategoryBox
+                key={index}
+                name={cat}
+                onClick={() => setSelectedCategory(cat)}
+                isActive={selectedCategory === cat}
+              />
             ))}
           </div>
         </section>
 
 
-        {/* All Products */}
-        <section className="section">
-          <h2>All Products</h2>
-          <div className="product-grid">
-            {allProducts.map((item) => (
+      <section className="section">
+        <h2>Products</h2>
+        <div className="product-grid">
+          {filteredProducts.length === 0 ? (
+            <p className="no-products">No products available in this category.</p>
+          ) : (
+            filteredProducts.map((item) => (
               <ProductCard key={item.id} product={item} />
-            ))}
-          </div>
-        </section>
+            ))
+          )}
+        </div>
+      </section>
 
       </div>
     </>
