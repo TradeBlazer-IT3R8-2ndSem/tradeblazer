@@ -37,12 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'chat',
-    'favorites',
-    'notifications',
-    'posts',
-    'reports',
-    'users',
+    'apps.chat',
+    'apps.favorites',
+    'apps.notifications',
+    'apps.posts',
+    'apps.reports',
+    'apps.users',
     'rest_framework',
     'corsheaders',
 ]
@@ -84,14 +84,16 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tradeblazer_db',
-        'USER': 'root',
-        'PASSWORD': '',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'tradeblazer',
+        'USER': 'postgres',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '5432',
     }
 }
+
+AUTH_USER_MODEL = "users.User"
 
 CORS_ALLOW_ALL_ORIGINS = True
 

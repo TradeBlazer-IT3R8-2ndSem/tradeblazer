@@ -1,4 +1,3 @@
-import Header from "../../components/layout/Header";
 import ProductCard from "../../components/ui/ProductCard";
 import CategoryBox from "../../components/ui/CategoryBox";
 import "../../styles/pages/dashboard/Home.css";
