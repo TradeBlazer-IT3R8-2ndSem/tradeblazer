@@ -1,9 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import CategoriesDropdown from "../ui/CategoriesDropdown";
 import AccountDropdown from "../ui/AccountDropdown";
 import "../../styles/components/layout/Header.css";
 
 const Header = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    if (e.key === "Enter" && searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery("");
+    }
+  };
+
+  const handleSearchClick = () => {
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery("");
+    }
+  };
+      
   return (
     <header className="header">
       
@@ -22,7 +40,10 @@ const Header = () => {
           type="text"
           placeholder="Search for products..."
           className="header-search"
-        />
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyPress={handleSearch}
+        />  
       </div>
 
       {/* RIGHT SIDE */}

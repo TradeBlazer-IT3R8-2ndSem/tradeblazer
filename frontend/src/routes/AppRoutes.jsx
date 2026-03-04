@@ -2,6 +2,8 @@ import React from "react";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import Home from "../pages/dashboard/Home";
 import Favorites from "../pages/favorites/Favorites";
+import Search from "../pages/search/Search";
+import Category from "../pages/categories/Category";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Header from "../components/layout/Header";
@@ -33,6 +35,8 @@ const AppRoutes = () => {
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Home />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/category/:category" element={<Category />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/notifications" element={<Placeholder name="Notifications" />} />
         <Route path="/chat" element={<Placeholder name="Chat" />} />
