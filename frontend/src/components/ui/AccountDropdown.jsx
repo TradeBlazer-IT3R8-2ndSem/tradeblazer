@@ -1,8 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const AccountDropdown = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Clear the logged-in user
+    localStorage.removeItem("userData");
+    // Redirect to login page
+    navigate("/login");
+  };
 
   return (
     <div
@@ -18,7 +26,9 @@ const AccountDropdown = () => {
         <div className="dropdown-menu">
           <Link to="/profile">My Profile</Link>
           <Link to="/support">Help</Link>
-          <Link to="/logout">Logout</Link>
+          <button onClick={handleLogout} className="dropdown-link">
+            Logout
+          </button>
         </div>
       )}
     </div>
