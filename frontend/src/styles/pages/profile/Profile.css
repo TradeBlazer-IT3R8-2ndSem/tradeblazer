@@ -1,72 +1,252 @@
-.profile-container {
+  .profile-container {
+    display: flex;
+    gap: 30px;
+    padding: 30px;
+  }
+
+  /* LEFT SIDE */
+  .profile-left {
+    width: 35%;
+  }
+
+  .profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+  }
+
+  .profile-name {
+    font-size: 20px;
+  }
+
+  .profile-info {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  .profile-info p {
+    margin: 8px 0;
+  }
+
+  /* RIGHT SIDE */
+  .profile-right {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .add-product-container {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: right;
+  }
+
+  .add-product-btn {
+    padding: 10px 20px;
+    border: none;
+    background-color: #355e3b;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .add-product-btn:hover {
+    background-color: #203b24;
+  }
+
+  .posts-container {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    min-height: 300px;
+  }
+
+  /* Grid for user posts to keep ProductCard compact */
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+    align-items: start;
+  }
+
+  /* Ensure ProductCard fills grid cell but stays compact */
+  .posts-grid .product-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+ /* ================= ENHANCED ADD POST MODAL ================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* slightly darker for focus */
+  backdrop-filter: blur(4px);
   display: flex;
-  gap: 30px;
-  padding: 30px;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px; /* ensure small screens have spacing */
 }
 
-/* LEFT SIDE */
-.profile-left {
-  width: 35%;
+.addpost-container.modal {
+  background: #ffffff;
+  width: 600px;          /* increase width */
+  max-width: 95%;        /* still responsive for small screens */
+  max-height: 90vh;      /* keeps it inside viewport */
+  overflow-y: auto;
+  border-radius: 20px;
+  padding: 35px 40px;    /* increase padding for a spacious feel */
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  animation: fadeIn 0.3s ease-in-out;
+  font-family: 'Segoe UI', sans-serif;
+  border-top: 6px solid #355e3b; /* accent bar */
 }
-
-.profile-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.profile-picture {
-  width: 150px;
-  height: 150px;
-  background-color: #ddd;
-  border-radius: 50%;
-  margin: 0 auto 10px;
-}
-
-.profile-name {
-  font-size: 20px;
-}
-
-.profile-info {
-  background: #f5f5f5;
-  padding: 20px;
-  border-radius: 10px;
-}
-
-.profile-info p {
-  margin: 8px 0;
-}
-
-/* RIGHT SIDE */
-.profile-right {
-  width: 65%;
+/* Modal Header */
+.modal-header {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  justify-content: center; /* center title */
+  position: relative;
+  margin-bottom: 25px;
 }
 
-.add-product-container {
-  background: #f5f5f5;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: right;
+.modal-header h2 {
+  font-size: 22px;
+  color: #203b24;
+  font-weight: 600;
 }
 
-.add-product-btn {
-  padding: 10px 20px;
+/* Close button top-right */
+.close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
   border: none;
+  background: #f5f5f5;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  color: #203b24;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
   background-color: #355e3b;
   color: white;
-  border-radius: 5px;
+  transform: scale(1.1);
+}
+
+/* Form layout */
+.addpost-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Row for price + category */
+.form-row {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* Form group */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Input / textarea / select styling */
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #d0d0d0;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background-color: #fdfdfd;
+  box-shadow: inset 0 2px 5px rgba(0,0,0,0.03);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #355e3b;
+  outline: none;
+  box-shadow: 0 0 8px rgba(53, 94, 59, 0.2);
+}
+
+/* Placeholder color */
+::placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+/* Image preview */
+.image-preview img {
+  height: 250px; /* fixed height for bigger preview */
+  width: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.3s;
+}
+
+
+.image-preview img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.3s;
+}
+
+.image-preview img:hover {
+  transform: scale(1.03);
+}
+
+/* Submit button */
+.submit-btn {
+  padding: 16px;
+  background: linear-gradient(135deg, #355e3b, #203b24);
+  color: white;
+  border: none;
+  border-radius: 12px;
   cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 5px 15px rgba(53,94,59,0.3);
 }
 
-.add-product-btn:hover {
-  background-color: #203b24;
+.submit-btn:hover {
+  background: linear-gradient(135deg, #203b24, #355e3b);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(53,94,59,0.4);
 }
 
-.posts-container {
-  background: #f5f5f5;
-  padding: 20px;
-  border-radius: 10px;
-  min-height: 300px;
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
