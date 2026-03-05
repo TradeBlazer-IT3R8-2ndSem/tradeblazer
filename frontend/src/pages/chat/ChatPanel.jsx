@@ -11,11 +11,20 @@ export default function ChatPanel() {
   const [selectedUser, setSelectedUser] = useState(users[0]);
   const [input, setInput] = useState("");
 
-  // Messages stored per user
-  const [messagesByUser, setMessagesByUser] = useState({
-    1: [{ id: 1, from: "bot", text: "Hello Cypress!" }],
-    2: [{ id: 1, from: "bot", text: "Hello Shandie!" }],
-    3: [{ id: 1, from: "bot", text: "Hello Syntyche!" }],
+  const [messagesByUser, setMessagesByUser] = useState(() => {
+    const saved = localStorage.getItem("chat_messages");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+       
+      }
+    }
+    return {
+      1: [{ id: 1, from: "bot", text: "Hello Cypress!" }],
+      2: [{ id: 1, from: "bot", text: "Hello Shandie!" }],
+      3: [{ id: 1, from: "bot", text: "Hello Syntyche!" }],
+    };
   });
 
   const handleSend = () => {
@@ -27,13 +36,17 @@ export default function ChatPanel() {
       text: input,
     };
 
-    setMessagesByUser((prev) => ({
-      ...prev,
-      [selectedUser.id]: [
-        ...prev[selectedUser.id],
-        newMessage,
-      ],
-    }));
+    setMessagesByUser((prev) => {
+      const updated = {
+        ...prev,
+        [selectedUser.id]: [
+          ...prev[selectedUser.id],
+          newMessage,
+        ],
+      };
+      localStorage.setItem("chat_messages", JSON.stringify(updated));
+      return updated;
+    });
 
     setInput("");
   };

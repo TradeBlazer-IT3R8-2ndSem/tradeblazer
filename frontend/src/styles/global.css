@@ -50,3 +50,16 @@ img {
   max-width: 1200px; 
   margin: 0 auto;
 }
+
+/* global responsive tweaks */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+    padding: 15px;
+  }
+}
