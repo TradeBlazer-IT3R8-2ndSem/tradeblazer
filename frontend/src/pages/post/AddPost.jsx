@@ -12,13 +12,11 @@ const AddPost = ({ isOpen, onClose, onSubmit }) => {
 
   const [preview, setPreview] = useState(null);
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle image upload and convert to Base64
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -31,15 +29,13 @@ const AddPost = ({ isOpen, onClose, onSubmit }) => {
     }
   };
 
-  // Handle form submit
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.image) return alert("Please upload an image!");
 
-    // Call parent onSubmit function to add post
     onSubmit(formData);
 
-    // Reset form
     setFormData({
       title: "",
       price: "",
@@ -48,7 +44,7 @@ const AddPost = ({ isOpen, onClose, onSubmit }) => {
       image: null,
     });
     setPreview(null);
-    onClose(); // close modal
+    onClose();
   };
 
   if (!isOpen) return null;

@@ -15,7 +15,6 @@ const Profile = () => {
     address: "Buena Oro, Cagayan de Oro City",
   });
 
-  // ---------- Posts State ----------
   const [posts, setPosts] = useState(() => {
     const savedPosts = localStorage.getItem("userPosts");
     return savedPosts ? JSON.parse(savedPosts) : [];
@@ -25,12 +24,10 @@ const Profile = () => {
     localStorage.setItem("userPosts", JSON.stringify(posts));
   }, [posts]);
 
-  // ---------- Modal State ----------
   const [showAddPost, setShowAddPost] = useState(false);
 
-  // ---------- AddPost Submit Handler ----------
   const handleAddPost = (newPost) => {
-    // Assign unique ID
+
     const postWithId = { ...newPost, id: Date.now() };
     setPosts([postWithId, ...posts]);
   };

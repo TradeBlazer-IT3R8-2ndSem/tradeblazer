@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import AllowAny
 from .models import Post, Category
 from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import PostSerializer, CategorySerializer
@@ -11,8 +11,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
     parser_classes = [MultiPartParser, FormParser]
 
     def perform_create(self, serializer):
-        serializer.save(seller=self.request.user)
+        user = getattr(self.request, "user", None)
+        if user and user.is_authenticated:
+            serializer.save(seller=user)
+        else:
+            serializer.save()

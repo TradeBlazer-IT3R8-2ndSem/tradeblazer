@@ -7,6 +7,7 @@ import Category from "../pages/categories/Category";
 import Chat from "../pages/chat/Chat";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import Profile from "../pages/profile/Profile";
 import Header from "../components/layout/header";
 import Footer from "../components/layout/Footer";
 import ChatButton from "../components/ui/ChatButton";
@@ -42,7 +43,7 @@ const AppRoutes = () => {
         <Route path="/notifications" element={<Placeholder name="Notifications" />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/support" element={<Placeholder name="Support" />} />
-        <Route path="/profile" element={<Placeholder name="Profile" />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/post/add" element={<Placeholder name="Add Post" />} />
       </Route>
 
