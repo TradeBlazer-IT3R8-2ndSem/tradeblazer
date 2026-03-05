@@ -6,9 +6,7 @@ const AccountDropdown = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear the logged-in user
     localStorage.removeItem("userData");
-    // Redirect to login page
     navigate("/login");
   };
 

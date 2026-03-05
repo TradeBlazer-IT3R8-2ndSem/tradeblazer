@@ -4,6 +4,7 @@ import Home from "../pages/dashboard/Home";
 import Favorites from "../pages/favorites/Favorites";
 import Search from "../pages/search/Search";
 import Category from "../pages/categories/Category";
+import Chat from "../pages/chat/Chat";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Header from "../components/layout/Header";
@@ -12,7 +13,7 @@ import ChatButton from "../components/ui/ChatButton";
 
 const Placeholder = ({ name }) => <div style={{ padding: "20px" }}>{name} Page Coming Soon!</div>;
 
-// layout wrapper for authenticated sections
+
 const Layout = () => (
   <div className="app-wrapper">
     <Header />
@@ -39,7 +40,7 @@ const AppRoutes = () => {
         <Route path="/category/:category" element={<Category />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/notifications" element={<Placeholder name="Notifications" />} />
-        <Route path="/chat" element={<Placeholder name="Chat" />} />
+        <Route path="/chat" element={<Chat />} />
         <Route path="/support" element={<Placeholder name="Support" />} />
         <Route path="/profile" element={<Placeholder name="Profile" />} />
         <Route path="/post/add" element={<Placeholder name="Add Post" />} />
