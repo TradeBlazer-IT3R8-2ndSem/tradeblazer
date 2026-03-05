@@ -7,7 +7,7 @@ import Category from "../pages/categories/Category";
 import Chat from "../pages/chat/Chat";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
-import Header from "../components/layout/Header";
+import Header from "../components/layout/header";
 import Footer from "../components/layout/Footer";
 import ChatButton from "../components/ui/ChatButton";
 
