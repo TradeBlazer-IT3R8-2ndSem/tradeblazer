@@ -6,6 +6,7 @@ import Search from "../pages/search/Search";
 import Category from "../pages/categories/Category";
 import Chat from "../pages/chat/Chat";
 import Login from "../pages/auth/Login";
+import Support from "../pages/support/Support";
 import Register from "../pages/auth/Register";
 import Profile from "../pages/profile/Profile";
 import Header from "../components/layout/header";
@@ -42,7 +43,7 @@ const AppRoutes = () => {
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/notifications" element={<Placeholder name="Notifications" />} />
         <Route path="/chat" element={<Chat />} />
-        <Route path="/support" element={<Placeholder name="Support" />} />
+        <Route path="/support" element={<Support />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/post/add" element={<Placeholder name="Add Post" />} />
       </Route>
@@ -54,5 +55,3 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
-
-
