@@ -83,11 +83,13 @@ const Profile = () => {
                 <ProductCard
                   key={post.id}
                   product={{
+                    id: post.id,
                     name: post.title,
                     price: post.price,
                     category: post.category,
                     image: post.image,
                     description: post.description,
+                    seller: post.seller,
                   }}
                   onViewDetails={handleViewDetails}
                 />

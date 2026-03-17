@@ -36,21 +36,21 @@ const Home = () => {
   ];
 
   const bestSelling = [
-    { id: 1, name: "Ferrero Bouquet", price: "₱1,100", category: "Gifts", image: "/public/ferrero.jpg" },
-    { id: 2, name: "Keychain", price: "₱600", category: "Gifts", image: "/public/keychain.jpg" },
-    { id: 3, name: "Plush Teddy Bear", price: "₱600", category: "Gifts", image: "/public/teddybear.jpg" },
-    { id: 4, name: "Flower Bouquet", price: "₱500", category: "Gifts", image: "/public/flowerbouquet.jpg" },
-    { id: 5, name: "Chocolate Box", price: "₱400", category: "Gifts", image: "/public/chocolatebox.jpg" },
+    { id: 1, name: "Ferrero Bouquet", price: "₱1,100", category: "Gifts", image: "/public/ferrero.jpg", seller: "TradeBlazer" },
+    { id: 2, name: "Keychain", price: "₱600", category: "Gifts", image: "/public/keychain.jpg", seller: "TradeBlazer" },
+    { id: 3, name: "Plush Teddy Bear", price: "₱600", category: "Gifts", image: "/public/teddybear.jpg", seller: "TradeBlazer" },
+    { id: 4, name: "Flower Bouquet", price: "₱500", category: "Gifts", image: "/public/flowerbouquet.jpg", seller: "TradeBlazer" },
+    { id: 5, name: "Chocolate Box", price: "₱400", category: "Gifts", image: "/public/chocolatebox.jpg", seller: "TradeBlazer" },
   ];
 
   const hardcodedProducts = [
-    { id: 6, name: "Hair Clamps", price: "₱25", category: "Fashion", image: "/public/hairclamps.jpg" },
-    { id: 7, name: "Socks", price: "₱50", category: "Fashion", image: "/public/socks.jpg" },
-    { id: 8, name: "Phone Case", price: "₱150", category: "Electronics", image: "/public/phonecase.jpg" },
-    { id: 9, name: "Hand Bag", price: "₱30", category: "Gifts", image: "/public/handbag.jpg" },
-    { id: 10, name: "Wallet", price: "₱200", category: "Fashion", image: "/public/wallet.jpg" },
-    { id: 11, name: "Backpack", price: "₱500", category: "Fashion", image: "/public/backpack.jpg" },
-    { id: 12, name: "Sunglasses", price: "₱300", category: "Fashion", image: "/public/sunglasses.jpg" },
+    { id: 6, name: "Hair Clamps", price: "₱25", category: "Fashion", image: "/public/hairclamps.jpg", seller: "TradeBlazer" },
+    { id: 7, name: "Socks", price: "₱50", category: "Fashion", image: "/public/socks.jpg", seller: "TradeBlazer" },
+    { id: 8, name: "Phone Case", price: "₱150", category: "Electronics", image: "/public/phonecase.jpg", seller: "TradeBlazer" },
+    { id: 9, name: "Hand Bag", price: "₱30", category: "Gifts", image: "/public/handbag.jpg", seller: "TradeBlazer" },
+    { id: 10, name: "Wallet", price: "₱200", category: "Fashion", image: "/public/wallet.jpg", seller: "TradeBlazer" },
+    { id: 11, name: "Backpack", price: "₱500", category: "Fashion", image: "/public/backpack.jpg", seller: "TradeBlazer" },
+    { id: 12, name: "Sunglasses", price: "₱300", category: "Fashion", image: "/public/sunglasses.jpg", seller: "TradeBlazer" },
   ];
 
   const userPosts = posts.map(post => ({

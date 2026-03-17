@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/pages/chat/ChatPanel.css";
 
 const users = [
@@ -7,9 +7,23 @@ const users = [
   { id: 3, name: "Syntyche" },
 ];
 
-export default function ChatPanel() {
-  const [selectedUser, setSelectedUser] = useState(users[0]);
+export default function ChatPanel({ selectedSeller, onClose }) {
+  const [selectedUser, setSelectedUser] = useState(() => {
+    if (selectedSeller) {
+      return users.find(user => user.name === selectedSeller) || users[0];
+    }
+    return users[0];
+  });
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    if (selectedSeller) {
+      const seller = users.find(user => user.name === selectedSeller);
+      if (seller) {
+        setSelectedUser(seller);
+      }
+    }
+  }, [selectedSeller]);
 
   const [messagesByUser, setMessagesByUser] = useState(() => {
     const saved = localStorage.getItem("chat_messages");
@@ -60,7 +74,12 @@ export default function ChatPanel() {
   return (
     <div className="chat-box">
 
-      <div className="chat-top-header">Chat</div>
+      <div className="chat-top-header">
+        <span>Chat</span>
+        {onClose && (
+          <button className="chat-close-btn" onClick={onClose}>×</button>
+        )}
+      </div>
 
       <div className="chat-sub-header">
         <div className="sub-left">Users</div>

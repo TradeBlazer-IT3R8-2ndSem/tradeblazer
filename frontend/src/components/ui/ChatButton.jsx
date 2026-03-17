@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MessageCircle, X } from "lucide-react";
 import ChatPanel from "../../pages/chat/ChatPanel";
+import { useChat } from "../../context/ChatContext";
 import "../../styles/components/ui/ChatButton.css";
 
 function ChatButton() {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleChat = () => setIsOpen(!isOpen);
+  const { isChatOpen, selectedSeller, toggleChat, closeChat } = useChat();
 
   return (
     <>
       <div className="chat-button" onClick={toggleChat}>
-        {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
+        {isChatOpen ? <X size={24} /> : <MessageCircle size={24} />}
       </div>
-      {isOpen && <ChatPanel />}
+      {isChatOpen && <ChatPanel selectedSeller={selectedSeller} onClose={closeChat} />}
     </>
   );
 }
