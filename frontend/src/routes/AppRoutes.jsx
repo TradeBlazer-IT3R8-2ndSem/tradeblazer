@@ -12,6 +12,7 @@ import Profile from "../pages/profile/Profile";
 import Header from "../components/layout/header";
 import Footer from "../components/layout/Footer";
 import ChatButton from "../components/ui/ChatButton";
+import Notifications from "../pages/notifications/Notifications";
 
 const Placeholder = ({ name }) => <div style={{ padding: "20px" }}>{name} Page Coming Soon!</div>;
 
@@ -41,7 +42,7 @@ const AppRoutes = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/category/:category" element={<Category />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path="/notifications" element={<Placeholder name="Notifications" />} />
+        <Route path="/notifications" element={<Notifications />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/support" element={<Support />} />
         <Route path="/profile" element={<Profile />} />
