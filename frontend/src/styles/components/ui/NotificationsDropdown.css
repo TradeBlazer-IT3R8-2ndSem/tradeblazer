@@ -66,6 +66,16 @@
   border-bottom: none;
 }
 
+.notification-item {
+  position: relative;
+  padding: 10px 15px;
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease; /* smoother animation */
+  border-bottom: 1px solid #edf1f7;
+}
+
 .notification-item:hover {
   background-color: #355e3b;
   color: white;
@@ -98,7 +108,10 @@
   font-size: 0.95rem;
 }
 
-.notification-top span {
+.notifications-dropdown .notification-top span {
+  position: absolute;   /* ADD */
+  top: 10px;            /* distance from top */
+  right: 15px;          /* distance from right */
   font-size: 0.75rem;
   color: #7a8692;
 }
