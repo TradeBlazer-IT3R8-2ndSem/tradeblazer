@@ -40,7 +40,7 @@ const NotificationsDropdown = () => {
 
   return (
     <div className="notifications-hover-container">
-      <span className="notification-title">
+      <span className="notification-title" onClick = {() => navigate("/notifications")}>
         Notifications
         <span className="badge-count">{notifications.filter(n => !n.read).length}</span>
       </span>

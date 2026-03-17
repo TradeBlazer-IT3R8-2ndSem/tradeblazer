@@ -5,23 +5,25 @@
   cursor: pointer;
 }
 
-/* Notifications title like Categories button */
 .notification-title {
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
   transition: 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-}
-
-.notification-title:hover {
-  background-color: #355e3b;
   color: white;
 }
 
-/* Badge next to text */
+.notification-title:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.notification-title:hover .badge-count {
+  background: white;
+  color: #355e3b;
+}
+
 .badge-count {
   background: #355e3b;
   color: white;
@@ -31,13 +33,14 @@
   transition: 0.2s ease;
 }
 
-/* Dropdown positioned below text */
 .notifications-dropdown {
+  font-size: 14px ;
   display: none;
+  color: white;
   position: absolute;
-  top: 75%;   /* directly below the text */
+  top: 75%;
   left: 0;
-  width: max-content;   /* adapt width to content */
+  width: max-content; 
   min-width: 220px;
   background: white;
   border-radius: 8px;
@@ -47,12 +50,10 @@
   z-index: 1000;
 }
 
-/* Show dropdown on hover */
 .notifications-hover-container:hover .notifications-dropdown {
   display: flex;
 }
 
-/* Notification items */
 .notification-item {
   padding: 10px 15px;
   display: flex;
@@ -67,8 +68,7 @@
 }
 
 .notification-item:hover {
-  background-color: #355e3b;
-  color: white;
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .notification-content {
