@@ -7,8 +7,8 @@
 }
 
 .auth-card {
-  width: 380px;
-  max-width: 90%;
+  width: 425px;
+  max-width: 95%;
   background: white;
   padding: 40px;
   border-radius: 16px;
@@ -40,31 +40,92 @@
   transition: 0.2s ease;
 }
 
-.auth-card input:focus,
-.auth-card select:focus {
-  outline: none;
-  border-color: #355E3B;
-  box-shadow: 0 0 0 2px rgba(53, 94, 59, 0.15);
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 
-.auth-card button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: #355E3B;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  transition: 0.2s ease;
+@media (min-width: 720px) {
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .form-grid input:nth-child(1),
+  .form-grid input:nth-child(2) {
+    grid-column: span 2;
+  }
 }
+
+.image-preview {
+  margin-top: 8px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #d0d0d0;
+  max-height: 180px;
+}
+
+  .image-preview img {
+    width: 100%;
+    height: auto;
+    max-height: 180px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .profile-preview-wrapper {
+    width: 100%;
+    min-height: 150px;
+    border-radius: 12px;
+    background: #f0f0f0;
+    border: 1px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    margin-bottom: 15px;
+    overflow: hidden;
+  }
+
+  .profile-placeholder {
+    font-size: 14px;
+    color: #777;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .auth-card button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #355E3B;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
 
 .auth-card button:hover {
   background: #2b4a2f;
   transform: translateY(-1px);
 }
 
-.auth-link {
+.auth-error {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px 12px;
+    border: 1px solid #e63946;
+    background: #fbe0e6;
+    color: #b91c1c;
+    border-radius: 8px;
+    font-size: 13px;
+    text-align: left;
+  }
+
+  .auth-link {
   color: #355E3B;
   cursor: pointer;
   text-decoration: underline;

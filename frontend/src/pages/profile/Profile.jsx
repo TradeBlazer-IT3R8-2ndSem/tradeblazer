@@ -4,6 +4,7 @@ import "../../styles/pages/profile/Profile.css";
 import ProductCard from "../../components/ui/ProductCard";
 import AddPost from "../post/AddPost";
 import ProductDetail from "../dashboard/ProductDetail";
+import EditProfile from "./EditProfile";
 import { PostsContext } from "../../context/PostsContext";
 
 const Profile = () => {
@@ -22,6 +23,7 @@ const Profile = () => {
         email: loggedUser.email || "N/A",
         number: loggedUser.number || "N/A",
         address: loggedUser.address || "N/A",
+        profilePicture: loggedUser.profilePicture || "",
       });
     }
   }, [navigate]);
@@ -34,6 +36,7 @@ const Profile = () => {
     : [];
 
   const [showAddPost, setShowAddPost] = useState(false);
+  const [showEditProfile, setShowEditProfile] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -46,6 +49,26 @@ const Profile = () => {
     setShowDetailModal(true);
   };
 
+  const handleEditProfile = () => {
+    setShowEditProfile(true);
+  };
+
+  const handleUpdateProfile = (updatedProfile) => {
+    setProfile(updatedProfile);
+    localStorage.setItem("userData", JSON.stringify(updatedProfile));
+
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const updatedUsers = users.map((u) => {
+      if (u.email === updatedProfile.email) {
+        return { ...u, ...updatedProfile, password: u.password };
+      }
+      return u;
+    });
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+    setShowEditProfile(false);
+  };
+
   if (!profile) {
     return <div>Loading...</div>;
   }
@@ -55,12 +78,19 @@ const Profile = () => {
 
       <div className="profile-left">
         <div className="profile-header">
-          <div className="profile-picture"></div>
+          <button className="edit-profile-btn" onClick={handleEditProfile}>
+            Edit Profile
+          </button>
+          <div className="profile-picture">
+            {profile.profilePicture ? (
+              <img src={profile.profilePicture} alt="Profile" />
+            ) : null}
+          </div>
           <h2 className="profile-name">{profile.name}</h2>
         </div>
 
         <div className="profile-info">
-          <p><strong>Student ID:</strong> {profile.studentId}</p>
+          <p><strong>ID:</strong> {profile.studentId}</p>
           <p><strong>Department:</strong> {profile.department}</p>
           <p><strong>Email:</strong> {profile.email}</p>
           <p><strong>Number:</strong> {profile.number}</p>
@@ -109,6 +139,14 @@ const Profile = () => {
         isOpen={showAddPost}
         onClose={() => setShowAddPost(false)}
         onSubmit={handleAddPost}
+      />
+
+      {/* edit profile modal */}
+      <EditProfile
+        isOpen={showEditProfile}
+        profile={profile}
+        onClose={() => setShowEditProfile(false)}
+        onSubmit={handleUpdateProfile}
       />
 
       <ProductDetail

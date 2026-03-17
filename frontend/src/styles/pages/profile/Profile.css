@@ -4,7 +4,6 @@
     padding: 30px;
   }
 
-  /* LEFT SIDE */
   .profile-left {
     width: 35%;
   }
@@ -12,6 +11,24 @@
   .profile-header {
     text-align: center;
     margin-bottom: 20px;
+    position: relative;
+  }
+
+  .edit-profile-btn {
+    position: absolute;
+    top: -10px;
+    right: 0;
+    background: #355e3b;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+
+  .edit-profile-btn:hover {
+    background: #203b24;
   }
 
   .profile-picture {
@@ -20,6 +37,13 @@
     background-color: #ddd;
     border-radius: 50%;
     margin: 0 auto 10px;
+    overflow: hidden;
+  }
+
+  .profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .profile-name {
@@ -71,7 +95,6 @@
     min-height: 300px;
   }
 
-  /* Grid for user posts to keep ProductCard compact */
   .posts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -80,13 +103,11 @@
     align-items: start;
   }
 
-  /* Ensure ProductCard fills grid cell but stays compact */
   .posts-grid .product-card {
     width: 100%;
     max-width: 100%;
   }
 
- /* ================= ENHANCED ADD POST MODAL ================= */
 
 .modal-overlay {
   position: fixed;
@@ -94,33 +115,33 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6); /* slightly darker for focus */
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  padding: 20px; /* ensure small screens have spacing */
+  padding: 20px;
 }
 
 .addpost-container.modal {
   background: #ffffff;
-  width: 600px;          /* increase width */
-  max-width: 95%;        /* still responsive for small screens */
-  max-height: 90vh;      /* keeps it inside viewport */
+  width: 600px;
+  max-width: 95%;
+  max-height: 90vh;
   overflow-y: auto;
   border-radius: 20px;
-  padding: 35px 40px;    /* increase padding for a spacious feel */
+  padding: 35px 40px;
   position: relative;
   box-shadow: 0 20px 50px rgba(0,0,0,0.25);
   animation: fadeIn 0.3s ease-in-out;
   font-family: 'Segoe UI', sans-serif;
-  border-top: 6px solid #355e3b; /* accent bar */
+  border-top: 6px solid #355e3b;
 }
-/* Modal Header */
+
 .modal-header {
   display: flex;
-  justify-content: center; /* center title */
+  justify-content: center;
   position: relative;
   margin-bottom: 25px;
 }
@@ -131,7 +152,6 @@
   font-weight: 600;
 }
 
-/* Close button top-right */
 .close-btn {
   position: absolute;
   top: 0;
@@ -156,28 +176,24 @@
   transform: scale(1.1);
 }
 
-/* Form layout */
 .addpost-form {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-/* Row for price + category */
 .form-row {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
 }
 
-/* Form group */
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-/* Input / textarea / select styling */
 .form-group input,
 .form-group select,
 .form-group textarea {
@@ -198,15 +214,13 @@
   box-shadow: 0 0 8px rgba(53, 94, 59, 0.2);
 }
 
-/* Placeholder color */
 ::placeholder {
   color: #999;
   opacity: 1;
 }
 
-/* Image preview */
 .image-preview img {
-  height: 250px; /* fixed height for bigger preview */
+  height: 250px; 
   width: 100%;
   object-fit: cover;
   border-radius: 12px;
@@ -225,7 +239,6 @@
   transform: scale(1.03);
 }
 
-/* Submit button */
 .submit-btn {
   padding: 16px;
   background: linear-gradient(135deg, #355e3b, #203b24);
@@ -245,7 +258,6 @@
   box-shadow: 0 8px 20px rgba(53,94,59,0.4);
 }
 
-/* Fade-in animation */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }

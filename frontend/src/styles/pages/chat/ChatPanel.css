@@ -65,13 +65,11 @@
   font-weight: bold;
 }
 
-/* BODY AREA */
 .chat-body {
   flex: 1;
   display: flex;
 }
 
-/* LEFT COLUMN */
 .chat-users {
   width: 200px;
   border-right: 1px solid #ddd;

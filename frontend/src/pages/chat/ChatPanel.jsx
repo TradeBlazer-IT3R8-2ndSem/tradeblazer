@@ -1,29 +1,61 @@
 import { useState, useEffect } from "react";
 import "../../styles/pages/chat/ChatPanel.css";
 
-const users = [
+const initialUsers = [
   { id: 1, name: "Cypress" },
   { id: 2, name: "Shandie" },
   { id: 3, name: "Syntyche" },
+  { id: 4, name: "Hanji" },
+  { id: 5, name: "Jomar" },
 ];
 
 export default function ChatPanel({ selectedSeller, onClose }) {
+  const [users, setUsers] = useState(initialUsers);
   const [selectedUser, setSelectedUser] = useState(() => {
     if (selectedSeller) {
-      return users.find(user => user.name === selectedSeller) || users[0];
+      return initialUsers.find((user) => user.name === selectedSeller) || initialUsers[0];
     }
-    return users[0];
+    return initialUsers[0];
   });
   const [input, setInput] = useState("");
+  const [userSearch, setUserSearch] = useState("");
 
   useEffect(() => {
     if (selectedSeller) {
-      const seller = users.find(user => user.name === selectedSeller);
+      const seller = users.find((user) => user.name === selectedSeller);
       if (seller) {
         setSelectedUser(seller);
+      } else {
+        setUsers((prev) => {
+          const nextId = prev.length ? Math.max(...prev.map((u) => u.id )) + 1 : 1;
+          const newUser = { id: nextId, name: selectedSeller };
+          return [...prev, newUser];
+        });
       }
     }
   }, [selectedSeller]);
+
+  useEffect(() => {
+    if (!selectedSeller) return;
+    const seller = users.find((user) => user.name === selectedSeller);
+    if (seller) setSelectedUser(seller);
+  }, [users, selectedSeller]);
+
+  useEffect(() => {
+    if (!selectedUser) return;
+    if (!messagesByUser[selectedUser.id]) {
+      setMessagesByUser((prev) => {
+        const updated = {
+          ...prev,
+          [selectedUser.id]: [
+            { id: Date.now(), from: "bot", text: `Hello ${selectedUser.name}!` },
+          ],
+        };
+        localStorage.setItem("chat_messages", JSON.stringify(updated));
+        return updated;
+      });
+    }
+  }, [selectedUser]);
 
   const [messagesByUser, setMessagesByUser] = useState(() => {
     const saved = localStorage.getItem("chat_messages");
@@ -31,14 +63,15 @@ export default function ChatPanel({ selectedSeller, onClose }) {
       try {
         return JSON.parse(saved);
       } catch {
-       
+        
       }
     }
-    return {
-      1: [{ id: 1, from: "bot", text: "Hello Cypress!" }],
-      2: [{ id: 1, from: "bot", text: "Hello Shandie!" }],
-      3: [{ id: 1, from: "bot", text: "Hello Syntyche!" }],
-    };
+
+    const init = {};
+    initialUsers.forEach((u) => {
+      init[u.id] = [{ id: 1, from: "bot", text: `Hello ${u.name}!` }];
+    });
+    return init;
   });
 
   const handleSend = () => {
@@ -51,12 +84,10 @@ export default function ChatPanel({ selectedSeller, onClose }) {
     };
 
     setMessagesByUser((prev) => {
+      const prevMessages = prev[selectedUser.id] || [];
       const updated = {
         ...prev,
-        [selectedUser.id]: [
-          ...prev[selectedUser.id],
-          newMessage,
-        ],
+        [selectedUser.id]: [...prevMessages, newMessage],
       };
       localStorage.setItem("chat_messages", JSON.stringify(updated));
       return updated;
@@ -82,7 +113,16 @@ export default function ChatPanel({ selectedSeller, onClose }) {
       </div>
 
       <div className="chat-sub-header">
-        <div className="sub-left">Users</div>
+        <div className="sub-left">
+          <span>Users</span>
+          <input
+            type="text"
+            className="chat-user-search"
+            placeholder="Search users..."
+            value={userSearch}
+            onChange={(e) => setUserSearch(e.target.value)}
+          />
+        </div>
         <div className="sub-right">{selectedUser.name}</div>
       </div>
 
@@ -90,7 +130,7 @@ export default function ChatPanel({ selectedSeller, onClose }) {
 
         {/* LEFT SIDE */}
         <div className="chat-users">
-          {users.map((user) => (
+          {(users.filter(user => user.name.toLowerCase().includes(userSearch.toLowerCase()))).map((user) => (
             <div
               key={user.id}
               className={`user-item ${
@@ -107,7 +147,7 @@ export default function ChatPanel({ selectedSeller, onClose }) {
         <div className="chat-main">
 
           <div className="chat-messages">
-            {messagesByUser[selectedUser.id].map((m) => (
+            {(messagesByUser[selectedUser.id] || []).map((m) => (
               <p key={m.id} className={`message ${m.from}`}>
                 {m.text}
               </p>
