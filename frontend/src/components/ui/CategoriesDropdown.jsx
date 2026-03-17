@@ -10,9 +10,9 @@ const CategoriesDropdown = () => {
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <span className="dropdown-trigger">
+      <Link to="/categories" className="dropdown-trigger">
         Categories ▾
-      </span>
+      </Link>
 
       {open && (
         <div className="dropdown-menu">

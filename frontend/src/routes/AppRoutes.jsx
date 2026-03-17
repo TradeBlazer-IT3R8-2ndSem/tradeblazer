@@ -4,6 +4,7 @@ import Home from "../pages/dashboard/Home";
 import Favorites from "../pages/favorites/Favorites";
 import Search from "../pages/search/Search";
 import Category from "../pages/categories/Category";
+import Categories from "../pages/categories/Categories";
 import Chat from "../pages/chat/Chat";
 import Login from "../pages/auth/Login";
 import Support from "../pages/support/Support";
@@ -39,6 +40,7 @@ const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Home />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/categories" element={<Categories />} />
         <Route path="/category/:category" element={<Category />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/notifications" element={<Placeholder name="Notifications" />} />

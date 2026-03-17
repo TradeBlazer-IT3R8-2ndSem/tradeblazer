@@ -90,6 +90,8 @@
   padding: 6px 10px;
   border-radius: 6px;
   transition: 0.2s ease;
+  color: white;
+  text-decoration: none;
 }
 
 .dropdown-trigger:hover {

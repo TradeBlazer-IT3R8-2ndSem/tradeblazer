@@ -1,0 +1,51 @@
+.categories-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0;
+}
+
+.categories-page h1 {
+  text-align: left;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.categories-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.categories-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.category-section {
+  width: 100%;
+}
+
+.category-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.no-products {
+  color: #666;
+  font-style: italic;
+  padding: 20px 0;
+}
