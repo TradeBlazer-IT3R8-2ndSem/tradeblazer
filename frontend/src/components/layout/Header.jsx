@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import CategoriesDropdown from "../ui/CategoriesDropdown";
 import AccountDropdown from "../ui/AccountDropdown";
+import NotificationsDropdown from "../ui/NotificationsDropdown";
 import "../../styles/components/layout/Header.css";
 
 const Header = () => {
@@ -48,7 +49,7 @@ const Header = () => {
 
       {/* RIGHT SIDE */}
       <div className="header-right">
-        <Link to="/notifications">Notifications</Link>
+        <NotificationsDropdown />
         <Link to="/favorites">Favorites</Link>
         <AccountDropdown />
       </div>
