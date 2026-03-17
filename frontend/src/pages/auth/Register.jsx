@@ -13,20 +13,6 @@ const Register = () => {
   const [department, setDepartment] = useState("");
   const [number, setNumber] = useState("");
   const [address, setAddress] = useState("");
-  const [profilePicture, setProfilePicture] = useState("");
-  const [preview, setPreview] = useState("");
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePicture(reader.result);
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleRegister = (e) => {
     e.preventDefault();
@@ -62,7 +48,6 @@ const Register = () => {
       department,
       number,
       address,
-      profilePicture,
     };
 
     users.push(newUser);
@@ -148,23 +133,6 @@ const Register = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          </div>
-
-          <label>Profile Picture</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="profile-picture-input"
-          />
-          <div className="profile-preview-wrapper">
-            {preview ? (
-              <img src={preview} alt="Profile preview" />
-            ) : (
-              <div className="profile-placeholder">
-                No profile picture selected yet
-              </div>
-            )}
           </div>
 
           <button type="submit">Register</button>
