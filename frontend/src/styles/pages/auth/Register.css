@@ -29,7 +29,8 @@
   color: #333;
 }
 
-.auth-card input {
+.auth-card input,
+.auth-card select {
   width: 100%;
   padding: 12px 14px;
   margin-bottom: 15px;
@@ -39,7 +40,8 @@
   transition: 0.2s ease;
 }
 
-.auth-card input:focus {
+.auth-card input:focus,
+.auth-card select:focus {
   outline: none;
   border-color: #355E3B;
   box-shadow: 0 0 0 2px rgba(53, 94, 59, 0.15);
@@ -87,7 +89,6 @@
   }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .auth-card {
     padding: 30px 20px;

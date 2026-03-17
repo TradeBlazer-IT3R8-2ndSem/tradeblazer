@@ -8,11 +8,15 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [studentId, setStudentId] = useState("");
+  const [department, setDepartment] = useState("");
+  const [number, setNumber] = useState("");
+  const [address, setAddress] = useState("");
 
   const handleRegister = (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !studentId || !department || !number || !address) {
       alert("Please fill in all fields.");
       return;
     }
@@ -30,6 +34,10 @@ const Register = () => {
       name,
       email,
       password,
+      studentId,
+      department,
+      number,
+      address,
     };
 
     users.push(newUser);
@@ -63,6 +71,42 @@ const Register = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            type="text"
+            placeholder="ID"
+            value={studentId}
+            onChange={(e) => setStudentId(e.target.value)}
+          />
+
+          <select
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+          >
+            <option value="">Select Department</option>
+            <option value="CITC">CITC</option>
+            <option value="CEA">CEA</option>
+            <option value="COT">COT</option>
+            <option value="CSTE">CSTE</option>
+            <option value="CSM">CSM</option>
+            <option value="COM">COM</option>
+            <option value="CON">CON</option>
+            <option value="SHS">SHS</option>
+          </select>
+
+          <input
+            type="text"
+            placeholder="Phone Number"
+            value={number}
+            onChange={(e) => setNumber(e.target.value)}
+          />
+
+          <input
+            type="text"
+            placeholder="Address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
           />
 
           <input

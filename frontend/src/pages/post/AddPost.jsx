@@ -90,7 +90,7 @@ const AddPost = ({ isOpen, onClose, onSubmit }) => {
               <option value="">Select Category</option>
               <option value="Gifts">Gifts</option>
               <option value="Electronics">Electronics</option>
-              <option value="Clothing">Clothing</option>
+              <option value="Fashion">Fashion</option>
               <option value="Others">Others</option>
             </select>
           </div>

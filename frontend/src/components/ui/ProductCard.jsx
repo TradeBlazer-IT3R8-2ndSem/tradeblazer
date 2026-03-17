@@ -2,10 +2,16 @@ import React, { useContext } from "react";
 import { FavoritesContext } from "../../context/FavoritesContext";
 import '../../styles/components/ui/ProductCard.css';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onViewDetails }) => {
   const { favorites, toggleFavorite } = useContext(FavoritesContext);
 
   const isLiked = favorites.some(p => p.id === product.id); 
+
+  const handleViewDetails = () => {
+    if (onViewDetails) {
+      onViewDetails(product);
+    }
+  };
 
   return (
     <div className="product-card">
@@ -22,7 +28,7 @@ const ProductCard = ({ product }) => {
         <span className="category-tag">{product.category}</span>
         <h3>{product.name}</h3>
         <p className="price">{product.price}</p>
-        <button className="view-btn">View Details</button>
+        <button className="view-btn" onClick={handleViewDetails}>View Details</button>
       </div>
     </div>
   );

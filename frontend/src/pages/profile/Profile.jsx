@@ -1,41 +1,53 @@
-// src/pages/profile/Profile.jsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/pages/profile/Profile.css";
 import ProductCard from "../../components/ui/ProductCard";
 import AddPost from "../post/AddPost";
+import ProductDetail from "../dashboard/ProductDetail";
+import { PostsContext } from "../../context/PostsContext";
 
 const Profile = () => {
-  // ---------- Dynamic Profile Details ----------
-  const [profile, setProfile] = useState({
-    name: "Jennie Kim",
-    studentId: "2023392632",
-    department: "BS Information Technology",
-    email: "kimjennie@email.com",
-    number: "09123456789",
-    address: "Buena Oro, Cagayan de Oro City",
-  });
-
-  const [posts, setPosts] = useState(() => {
-    const savedPosts = localStorage.getItem("userPosts");
-    return savedPosts ? JSON.parse(savedPosts) : [];
-  });
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
-    localStorage.setItem("userPosts", JSON.stringify(posts));
-  }, [posts]);
+    const loggedUser = JSON.parse(localStorage.getItem("userData"));
+    if (!loggedUser) {
+      navigate("/login");
+    } else {
+      setProfile({
+        name: loggedUser.name || "User",
+        studentId: loggedUser.studentId || "N/A",
+        department: loggedUser.department || "N/A",
+        email: loggedUser.email || "N/A",
+        number: loggedUser.number || "N/A",
+        address: loggedUser.address || "N/A",
+      });
+    }
+  }, [navigate]);
+
+  const { posts, addPost } = useContext(PostsContext);
 
   const [showAddPost, setShowAddPost] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleAddPost = (newPost) => {
-
-    const postWithId = { ...newPost, id: Date.now() };
-    setPosts([postWithId, ...posts]);
+    addPost(newPost, profile);
   };
+
+  const handleViewDetails = (product) => {
+    setSelectedProduct(product);
+    setShowDetailModal(true);
+  };
+
+  if (!profile) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="profile-container">
 
-      {/* LEFT SIDE */}
       <div className="profile-left">
         <div className="profile-header">
           <div className="profile-picture"></div>
@@ -51,7 +63,6 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* RIGHT SIDE */}
       <div className="profile-right">
         <div className="add-product-container">
           <button
@@ -76,7 +87,9 @@ const Profile = () => {
                     price: post.price,
                     category: post.category,
                     image: post.image,
+                    description: post.description,
                   }}
+                  onViewDetails={handleViewDetails}
                 />
               ))}
             </div>
@@ -84,11 +97,17 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* ADD POST MODAL */}
+      {/* add post modal */}
       <AddPost
         isOpen={showAddPost}
         onClose={() => setShowAddPost(false)}
         onSubmit={handleAddPost}
+      />
+
+      <ProductDetail
+        product={selectedProduct}
+        isOpen={showDetailModal}
+        onClose={() => setShowDetailModal(false)}
       />
     </div>
   );

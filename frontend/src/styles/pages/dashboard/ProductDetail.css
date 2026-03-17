@@ -1,0 +1,128 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: grid;                 
+  place-items: center;           
+  z-index: 1000;
+  padding: 20px;                  
+  box-sizing: border-box;
+}
+
+.product-detail-modal {
+  background: var(--background);
+  border-radius: 12px;
+  padding: 30px;
+  width: 90%;             
+  max-width: 1000px;      
+  min-height: 60vh;           
+  max-height: 85vh;       
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: var(--primary);
+  border: none;
+  color: var(--white);
+  font-size: 22px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.close-btn:hover {
+  background: var(--primary-dark);
+}
+
+.product-detail-content {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  flex: 1;
+  justify-content: flex-start;   
+  align-items: flex-start;       
+  flex-wrap: wrap;
+  text-align: left;        
+}
+
+.product-image {
+  width: 320px;
+  height: 320px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid var(--primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;  
+}
+
+.product-info h2 {
+  margin: 0;
+  color: var(--primary-dark);
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.product-info .category {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.product-info .price {
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--primary-dark);
+}
+
+.product-info .description {
+  margin-top: 10px;
+  color: var(--text-dark);
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 500px;
+}
+
+.product-info .seller {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.product-info .chat-btn {
+  margin-top: auto;
+  padding: 12px 24px;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: fit-content;
+}
+
+.product-info .chat-btn:hover {
+  background: var(--primary-dark);
+}
