@@ -28,6 +28,11 @@ const Profile = () => {
 
   const { posts, addPost } = useContext(PostsContext);
 
+  // Only show posts created by the currently logged-in user.
+  const userPosts = profile
+    ? posts.filter((post) => post.seller === profile.name)
+    : [];
+
   const [showAddPost, setShowAddPost] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -75,11 +80,11 @@ const Profile = () => {
 
         <div className="posts-container">
           <h3>User Posts</h3>
-          {posts.length === 0 ? (
+          {userPosts.length === 0 ? (
             <p>No posts yet...</p>
           ) : (
             <div className="posts-grid">
-              {posts.map((post) => (
+              {userPosts.map((post) => (
                 <ProductCard
                   key={post.id}
                   product={{
@@ -110,6 +115,7 @@ const Profile = () => {
         product={selectedProduct}
         isOpen={showDetailModal}
         onClose={() => setShowDetailModal(false)}
+        onUpdate={(updatedProduct) => setSelectedProduct(updatedProduct)}
       />
     </div>
   );

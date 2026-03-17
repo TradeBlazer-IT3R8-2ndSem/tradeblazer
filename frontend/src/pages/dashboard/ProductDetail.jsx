@@ -5,7 +5,7 @@ import { useChat } from '../../context/ChatContext';
 import EditProductCard from './EditProductCard';
 import '../../styles/pages/dashboard/ProductDetail.css';
 
-const ProductDetail = ({ product, isOpen, onClose }) => {
+const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
   const { favorites, toggleFavorite } = useContext(FavoritesContext);
   const { deletePost, updatePost } = useContext(PostsContext);
   const { openChatWithSeller } = useChat();
@@ -18,6 +18,14 @@ const ProductDetail = ({ product, isOpen, onClose }) => {
     const userData = JSON.parse(localStorage.getItem("userData"));
     setCurrentUser(userData);
   }, []);
+
+  // Reset edit mode when the modal closes or when a different product is opened.
+  useEffect(() => {
+    if (!isOpen) {
+      setIsEditMode(false);
+      setEditFormData(null);
+    }
+  }, [isOpen, product]);
 
   if (!isOpen || !product) return null;
 
@@ -57,12 +65,28 @@ const ProductDetail = ({ product, isOpen, onClose }) => {
       alert('Please fill in all required fields');
       return;
     }
-    updatePost(product.id, {
+
+    const updatedProduct = {
+      ...product,
       name: editFormData.title,
       price: editFormData.price,
       category: editFormData.category,
       description: editFormData.description,
+    };
+
+    // The posts stored in PostsContext use `title` (not `name`) as the field.
+    // Updating `title` is necessary so the change is reflected when the
+    // parent component rebuilds the product list from the posts state.
+    updatePost(product.id, {
+      title: updatedProduct.name,
+      price: updatedProduct.price,
+      category: updatedProduct.category,
+      description: updatedProduct.description,
     });
+
+    // Update parent view so the modal reflects changes immediately
+    if (onUpdate) onUpdate(updatedProduct);
+
     setIsEditMode(false);
   };
 

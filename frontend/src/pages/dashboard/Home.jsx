@@ -122,6 +122,7 @@ const Home = () => {
         product={selectedProduct}
         isOpen={showDetailModal}
         onClose={() => setShowDetailModal(false)}
+        onUpdate={(updatedProduct) => setSelectedProduct(updatedProduct)}
       />
     </div>
   );
