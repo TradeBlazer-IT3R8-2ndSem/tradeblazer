@@ -82,6 +82,18 @@ const Notifications = () => {
                     <p>{notif.message}</p>
                   </div>
                 </div>
+
+                <button
+                  className="remove-btn"
+                  onClick={(e) => {
+                    e.stopPropagation(); // prevent triggering notification click
+                    setNotifications((prev) =>
+                      prev.filter((n) => n.id !== notif.id)
+                    );
+                  }}
+                >
+                  ✕
+                </button>
               </div>
             ))}
           </div>

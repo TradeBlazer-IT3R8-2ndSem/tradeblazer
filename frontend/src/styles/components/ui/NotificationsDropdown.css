@@ -106,7 +106,7 @@
 .notification-content p {
   margin: 2px 0 0;
   font-size: 0.85rem;
-  color: #354b5d;
+  color: #050212;
 }
 
 .see-more-btn {
@@ -121,6 +121,6 @@
 }
 
 .see-more-btn:hover {
-  background-color: #355e3b;
-
+  background-color: #edf1f7;
 }
+
