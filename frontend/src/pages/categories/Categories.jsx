@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CategoryBox from '../../components/ui/CategoryBox';
 import ProductCard from '../../components/ui/ProductCard';
@@ -6,6 +6,7 @@ import '../../styles/pages/categories/Categories.css';
 
 const Categories = () => {
   const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const categories = [
     { name: 'Electronics', slug: 'electronics' },
@@ -31,8 +32,12 @@ const Categories = () => {
     { id: 12, name: "Sunglasses", price: "₱300", category: "Fashion", image: "/sunglasses.jpg", seller: "TradeBlazer" },
   ];
 
-  const handleCategoryClick = (slug) => {
-    navigate(`/category/${slug}`);
+  const handleCategoryClick = (cat) => {
+    if (selectedCategory && selectedCategory.name === cat.name) {
+      setSelectedCategory(null); // Toggle back to all
+    } else {
+      setSelectedCategory(cat);
+    }
   };
 
   const handleViewDetails = (product) => {
@@ -51,13 +56,13 @@ const Categories = () => {
           <CategoryBox
             key={cat.slug}
             name={cat.name}
-            onClick={() => handleCategoryClick(cat.slug)}
+            onClick={() => handleCategoryClick(cat)}
           />
         ))}
       </div>
       
       <div className="categories-sections">
-        {categories.map((cat) => {
+        {(selectedCategory ? [selectedCategory] : categories).map((cat) => {
           const categoryProducts = getProductsByCategory(cat.name);
           return (
             <div key={cat.slug} className="category-section">
