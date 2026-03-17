@@ -1,0 +1,126 @@
+.notifications-hover-container {
+  position: relative;
+  display: inline-block;
+  font-family: sans-serif;
+  cursor: pointer;
+}
+
+/* Notifications title like Categories button */
+.notification-title {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.notification-title:hover {
+  background-color: #355e3b;
+  color: white;
+}
+
+/* Badge next to text */
+.badge-count {
+  background: #355e3b;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  transition: 0.2s ease;
+}
+
+/* Dropdown positioned below text */
+.notifications-dropdown {
+  display: none;
+  position: absolute;
+  top: 75%;   /* directly below the text */
+  left: 0;
+  width: max-content;   /* adapt width to content */
+  min-width: 220px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  flex-direction: column;
+  padding: 8px 0;
+  z-index: 1000;
+}
+
+/* Show dropdown on hover */
+.notifications-hover-container:hover .notifications-dropdown {
+  display: flex;
+}
+
+/* Notification items */
+.notification-item {
+  padding: 10px 15px;
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  border-bottom: 1px solid #edf1f7;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item:hover {
+  background-color: #355e3b;
+  color: white;
+}
+
+.notification-content {
+  display: flex;
+  gap: 10px;
+}
+
+.badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #355e3b;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.notification-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notification-top strong {
+  font-size: 0.95rem;
+}
+
+.notification-top span {
+  font-size: 0.75rem;
+  color: #7a8692;
+}
+
+.notification-content p {
+  margin: 2px 0 0;
+  font-size: 0.85rem;
+  color: #354b5d;
+}
+
+.see-more-btn {
+  text-align: center;
+  padding: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #355e3b;
+  border-top: 1px solid #edf1f7;
+  border-radius: 0 0 8px 8px;
+  transition: 0.2s ease;
+}
+
+.see-more-btn:hover {
+  background-color: #355e3b;
+
+}
