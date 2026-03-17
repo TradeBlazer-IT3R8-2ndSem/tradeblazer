@@ -10,6 +10,7 @@ import Login from "../pages/auth/Login";
 import Support from "../pages/support/Support";
 import Register from "../pages/auth/Register";
 import Profile from "../pages/profile/Profile";
+import AdminDashboard from "../pages/admin/AdminDashboard";
 import Header from "../components/layout/header";
 import Footer from "../components/layout/Footer";
 import ChatButton from "../components/ui/ChatButton";
@@ -34,6 +35,9 @@ const AppRoutes = () => {
       {/* Auth Pages */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+
+      {/* Admin Dashboard - separate layout */}
+      <Route path="/admin/*" element={<AdminDashboard />} />
 
       {/* Dashboard & other pages wrapped by layout */}
       <Route element={<Layout />}>
