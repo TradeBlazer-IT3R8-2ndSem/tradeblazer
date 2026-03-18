@@ -43,7 +43,7 @@ const AppRoutes = () => {
       {/* Dashboard & other pages wrapped by layout */}
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/search" element={<Search />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/category/:category" element={<Category />} />

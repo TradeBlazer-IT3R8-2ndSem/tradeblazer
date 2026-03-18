@@ -8,20 +8,36 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // Normal user login
   const handleLogin = (e) => {
     e.preventDefault();
 
     const users = JSON.parse(localStorage.getItem("users")) || [];
     const user = users.find(
-      (u) => u.email === email && u.password === password
+      (u) => u.email === email && u.password === password && u.role === "user"
     );
 
     if (user) {
       localStorage.setItem("userData", JSON.stringify(user));
       alert(`Welcome back, ${user.name}!`);
-      navigate("/dashboard");
+      navigate("/home");
     } else {
-      alert("Invalid email or password.");
+      alert("Invalid email or password for user.");
+    }
+  };
+
+  const handleAdminLogin = () => {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const admin = users.find(
+      (u) => u.email === email && u.password === password && u.role === "admin"
+    );
+
+    if (admin) {
+      localStorage.setItem("userData", JSON.stringify(admin));
+      alert(`Welcome back, Admin ${admin.name}!`);
+      navigate("/admin");
+    } else {
+      alert("Invalid admin credentials.");
     }
   };
 
@@ -33,7 +49,7 @@ const Login = () => {
           alt="TradeBlazer Logo"
           className="auth-logo"
         />
-        <h2>Sign In to TradeBlazer  </h2>
+        <h2>Sign In to TradeBlazer</h2>
         <form onSubmit={handleLogin}>
           <input
             type="email"
@@ -50,6 +66,14 @@ const Login = () => {
           />
 
           <button type="submit">Login</button>
+
+          <button
+            type="button"
+            className="admin-login-btn"
+            onClick={handleAdminLogin}
+          >
+            Login as Administrator
+          </button>
         </form>
 
         <p onClick={() => navigate("/register")} className="auth-link">

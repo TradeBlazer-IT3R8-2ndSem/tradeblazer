@@ -69,6 +69,24 @@
   display: block;
 }
 
+.admin-login-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #ff6600;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+  margin-top: 10px;
+}
+
+.admin-login-btn:hover {
+  background: #e65c00;
+  transform: translateY(-1px);
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

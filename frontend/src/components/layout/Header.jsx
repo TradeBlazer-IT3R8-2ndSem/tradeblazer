@@ -28,7 +28,7 @@ const Header = () => {
       
       {/* LEFT SIDE */}
       <div className="header-left">
-        <Link to="/dashboard" className="logo-link">
+        <Link to="/home" className="logo-link">
           <img src="/logo.png" alt="TradeBlazer Logo" className="logo-img" />
           <span className="logo-text">TradeBlazer</span>
         </Link>
