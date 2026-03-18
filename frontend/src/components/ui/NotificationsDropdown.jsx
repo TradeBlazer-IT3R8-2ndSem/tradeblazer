@@ -24,16 +24,20 @@ const NotificationsDropdown = () => {
     return `${Math.floor(seconds / 86400)}d ago`;
   };
 
-  const sortedNotifications = notifications
+  const sortedNotifications = [...notifications]
     .sort((a, b) => b.time - a.time)
     .slice(0, 5);
-
+    
   const markAsRead = (id) => {
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, read: true } : n))
     );
   };
-  
+
+  const handleNotificationClick = (notif) => {
+    markAsRead(notif.id); // 👈 this changes it from unread → read
+  };
+    
   const handleSeeMore = () => {
     navigate("/notifications");
   };

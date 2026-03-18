@@ -136,6 +136,9 @@
   font-size: 0.76rem;
   color: #7a8692;
   white-space: nowrap;
+  position: absolute;   /* ADD */
+  top: 10px;            /* distance from top */
+  right: 50px;  
 }
 
 .notification-content p {
