@@ -1,0 +1,42 @@
+.admin-dashboard {
+  display: flex;
+  height: 100vh;
+  background-color: var(--background);
+  overflow: hidden;
+}
+
+.admin-main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background-color: var(--background);
+}
+
+/* Scrollbar styling */
+.admin-main-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-main-content::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+.admin-main-content::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+.admin-main-content::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .admin-dashboard {
+    flex-direction: column;
+  }
+
+  .admin-main-content {
+    padding: 15px;
+  }
+}

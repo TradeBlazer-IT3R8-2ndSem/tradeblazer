@@ -1,0 +1,282 @@
+/* Product Management Panel */
+.product-management-panel {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.panel-header {
+  margin-bottom: 30px;
+}
+
+.panel-header h1 {
+  margin: 0 0 5px 0;
+  color: var(--text-dark);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.panel-description {
+  margin: 0;
+  color: rgba(51, 51, 51, 0.7);
+  font-size: 14px;
+}
+
+/* Controls */
+.management-controls {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.search-bar {
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.status-filter {
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+/* Table */
+.products-table-container {
+  background: var(--white);
+  border-radius: 12px;
+  overflow-x: auto; /* allow scroll if needed */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  table-layout: auto; /* ✅ FIX */
+}
+
+.products-table thead {
+  background: #355E3B;
+}
+
+.products-table thead th {
+  color: #ffffff;
+}
+
+.products-table th,
+.products-table td {
+  padding: 15px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* Row hover */
+.products-table tbody tr:hover {
+  background-color: #cdddcd;
+}
+
+/* Text styles */
+.product-title {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.product-seller {
+  color: rgba(51, 51, 51, 0.7);
+}
+
+/* Reports */
+.report-count {
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.report-count.low {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.report-count.medium {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.report-count.high {
+  background: #ffebee;
+  color: #c62828;
+}
+
+/* Risk */
+.risk-level {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.risk-level.low {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.risk-level.medium {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.risk-level.high {
+  background: #ffebee;
+  color: #c62828;
+}
+
+/* Actions */
+.product-actions {
+  display: flex;
+  gap: 25px;
+  justify-content: flex-start; /* FIX */
+  align-items: center;
+}
+
+.btn-action {   
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background: #ffebee;
+}
+
+/* Footer */
+.table-footer {
+  padding: 15px;
+  font-size: 12px;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 22px;
+  color: var(--text-dark);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.5);
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-product-info {
+  margin: 0 0 20px 0;
+  font-size: 14px;
+  color: rgba(51, 51, 51, 0.7);
+}
+
+.reports-container h3 {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  color: var(--text-dark);
+}
+
+.report-item {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  align-items: flex-start;
+}
+
+.report-image {
+  min-width: 80px;
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #e0e0e0;
+}
+
+.report-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.report-explanation {
+  flex: 1;
+}
+
+.report-explanation p {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(51, 51, 51, 0.8);
+  line-height: 1.5;
+}
+
+.no-reports {
+  text-align: center;
+  color: rgba(51, 51, 51, 0.5);
+  padding: 20px;
+  font-style: italic;
+}
