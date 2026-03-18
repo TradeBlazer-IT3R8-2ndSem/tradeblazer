@@ -3,6 +3,7 @@ import { FavoritesContext } from '../../context/FavoritesContext';
 import { PostsContext } from '../../context/PostsContext';
 import { useChat } from '../../context/ChatContext';
 import EditProductCard from './EditProductCard';
+import ReportUser from '../../pages/profile/ReportUser';
 import '../../styles/pages/dashboard/ProductDetail.css';
 
 const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
@@ -13,17 +14,18 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editFormData, setEditFormData] = useState(null);
+  const [showReport, setShowReport] = useState(false);
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
     setCurrentUser(userData);
   }, []);
 
-  // Reset edit mode when the modal closes or when a different product is opened.
   useEffect(() => {
     if (!isOpen) {
       setIsEditMode(false);
       setEditFormData(null);
+      setShowReport(false);
     }
   }, [isOpen, product]);
 
@@ -74,9 +76,6 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
       description: editFormData.description,
     };
 
-    // The posts stored in PostsContext use `title` (not `name`) as the field.
-    // Updating `title` is necessary so the change is reflected when the
-    // parent component rebuilds the product list from the posts state.
     updatePost(product.id, {
       title: updatedProduct.name,
       price: updatedProduct.price,
@@ -84,7 +83,6 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
       description: updatedProduct.description,
     });
 
-    // Update parent view so the modal reflects changes immediately
     if (onUpdate) onUpdate(updatedProduct);
 
     setIsEditMode(false);
@@ -97,6 +95,7 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
+      
       <div className="product-detail-modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-btn" onClick={onClose}>✕</button>
         
@@ -109,37 +108,75 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
           />
         ) : (
           <div className="product-detail-content">
+            
+            {/* IMAGE */}
             <div className="product-image-container">
-              <img src={product.image || 'https://via.placeholder.com/300'} alt={product.name} className="product-image" />
+              <img 
+                src={product.image || 'https://via.placeholder.com/300'} 
+                alt={product.name} 
+                className="product-image" 
+              />
+
+              {/* FAVORITE */}
               <button
                 className={`favorite-btn ${isLiked ? 'active' : ''}`}
                 onClick={() => toggleFavorite(product)}
-                title={isLiked ? 'Remove from favorites' : 'Add to favorites'}
               >
                 {isLiked ? '❤️' : '🤍'}
               </button>
             </div>
+
+            {/* INFO */}
             <div className="product-info">
               <div className="product-header">
                 <h2>{product.name}</h2>
               </div>
-              {product.seller && <p className="seller">Seller: {product.seller}</p>}
+
+              {product.seller && (
+                <p className="seller">Seller: {product.seller}</p>
+              )}
+
               <p className="category">Category: {product.category}</p>
               <p className="price">₱{product.price}</p>
-              {product.description && <p className="description">{product.description}</p>}
-              
+
+              {product.description && (
+                <p className="description">{product.description}</p>
+              )}
+
+              {/* ACTIONS */}
               <div className="product-actions">
                 {!isOwner && (
-                  <button className="chat-btn" onClick={handleChatSeller}>Chat Seller</button>
+                  <>
+                    <button className="chat-btn" onClick={handleChatSeller}>
+                      Chat Seller
+                    </button>
+
+                    {}
+                    <button 
+                      className="report-btn"
+                      onClick={() => setShowReport(true)}
+                    >
+                      Report
+                    </button>
+                  </>
                 )}
               </div>
             </div>
+
+            {/* OWNER ACTIONS */}
             {isOwner && (
               <div className="bottom-product-actions">
-                <button className="icon-btn edit-icon-btn" onClick={handleEditClick} title="Edit Product">
+                <button 
+                  className="icon-btn edit-icon-btn" 
+                  onClick={handleEditClick}
+                >
                   ✏️
                 </button>
-                <button className="icon-btn delete-icon-btn" onClick={handleDelete} title="Delete Product">
+
+                <button 
+                  className="icon-btn delete-icon-btn" 
+                  onClick={handleDelete}
+                >
                   🗑️
                 </button>
               </div>
@@ -147,6 +184,12 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
           </div>
         )}
       </div>
+      <ReportUser
+        isOpen={showReport}
+        onClose={() => setShowReport(false)}
+        product={product}
+      />
+
     </div>
   );
 };

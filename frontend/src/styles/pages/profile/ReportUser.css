@@ -1,0 +1,68 @@
+.report-modal {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.report-modal h2 {
+  margin-bottom: 15px;
+}
+
+.report-info {
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.report-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.report-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.report-group select,
+.report-group textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.report-group textarea {
+  min-height: 80px;
+  resize: none;
+}
+
+.report-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-btn {
+  background: #ccc;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.submit-btn {
+  background: #355e3b;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.submit-btn:hover {
+  background: #2d4f30;
+}

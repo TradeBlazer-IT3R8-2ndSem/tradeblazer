@@ -34,7 +34,7 @@ const Categories = () => {
 
   const handleCategoryClick = (cat) => {
     if (selectedCategory && selectedCategory.name === cat.name) {
-      setSelectedCategory(null); // Toggle back to all
+      setSelectedCategory(null);
     } else {
       setSelectedCategory(cat);
     }

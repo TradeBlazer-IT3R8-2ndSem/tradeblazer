@@ -205,14 +205,31 @@
   background: var(--primary-dark);
 }
 
+.product-info .report-btn {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.product-info .report-btn:hover {
+  background: #c9302c;
+}
+
 .product-actions {
   margin-top: 20px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
 }
-
 .owner-actions {
   display: flex;
   gap: 8px;

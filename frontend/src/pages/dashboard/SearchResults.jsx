@@ -12,7 +12,6 @@ const Search = () => {
   const query = searchParams.get("q") || "";
   const { posts } = useContext(PostsContext);
 
-  // Hardcoded products
   const hardcodedProducts = [
     { id: 1, name: "Ferrero Bouquet", price: "₱1,100", category: "Gifts", image: "/public/ferrero.jpg" },
     { id: 2, name: "Keychain", price: "₱600", category: "Gifts", image: "/public/keychain.jpg" },
@@ -28,7 +27,6 @@ const Search = () => {
     { id: 12, name: "Sunglasses", price: "₱300", category: "Fashion", image: "/public/sunglasses.jpg" },
   ];
 
-  // Convert user posts to product format
   const userProducts = posts.map(post => ({
     id: post.id,
     name: post.title,
@@ -39,7 +37,6 @@ const Search = () => {
     seller: post.seller,
   }));
 
-  // Combine hardcoded and user products
   const allProducts = [...hardcodedProducts, ...userProducts];
 
   useEffect(() => {
