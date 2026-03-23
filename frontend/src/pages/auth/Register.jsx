@@ -14,10 +14,19 @@ const Register = () => {
   const [number, setNumber] = useState("");
   const [address, setAddress] = useState("");
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (!name || !email || !password || !confirmPassword || !studentId || !department || !number || !address) {
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !confirmPassword ||
+      !studentId ||
+      !department ||
+      !number ||
+      !address
+    ) {
       alert("Please fill in all fields.");
       return;
     }
@@ -32,44 +41,52 @@ const Register = () => {
       return;
     }
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const emailExists = users.some((user) => user.email === email);
-    if (emailExists) {
-      alert("Email already registered.");
-      return;
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/users/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: name,
+          email,
+          password,
+          student_id: studentId,
+          phone_number: number,
+          address,
+          department,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(JSON.stringify(data));
+        return;
+      }
+
+      alert("Registered successfully!");
+      navigate("/login");
+
+    } catch (err) {
+      console.error(err);
+      alert("Server error");
     }
-
-    const newUser = {
-      id: Date.now(),
-      name,
-      email,
-      password,
-      studentId,
-      department,
-      number,
-      address,
-    };
-
-    users.push(newUser);
-
-    localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("userData", JSON.stringify(newUser));
-
-    alert(`Welcome, ${name}!`);
-    navigate("/dashboard");
   };
 
   return (
     <div className="auth-page">
       <div className="auth-card">
         <img
-          src="/public/logo.png"
+          src="/logo.png"
           alt="TradeBlazer Logo"
           className="auth-logo"
         />
         <h2>Create Account</h2>
+
         <form onSubmit={handleRegister}>
           <div className="form-grid">
+
             <input
               type="text"
               placeholder="Full Name"
@@ -86,7 +103,7 @@ const Register = () => {
 
             <input
               type="text"
-              placeholder="ID"
+              placeholder="Student ID"
               value={studentId}
               onChange={(e) => setStudentId(e.target.value)}
             />
@@ -95,44 +112,45 @@ const Register = () => {
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
             >
-            <option value="">Select Department</option>
-            <option value="CITC">CITC</option>
-            <option value="CEA">CEA</option>
-            <option value="COT">COT</option>
-            <option value="CSTE">CSTE</option>
-            <option value="CSM">CSM</option>
-            <option value="COM">COM</option>
-            <option value="CON">CON</option>
-            <option value="SHS">SHS</option>
-          </select>
+              <option value="">Select Department</option>
+              <option value="CITC">CITC</option>
+              <option value="CEA">CEA</option>
+              <option value="COT">COT</option>
+              <option value="CSTE">CSTE</option>
+              <option value="CSM">CSM</option>
+              <option value="COM">COM</option>
+              <option value="CON">CON</option>
+              <option value="SHS">SHS</option>
+            </select>
 
-          <input
-            type="text"
-            placeholder="Phone Number"
-            value={number}
-            onChange={(e) => setNumber(e.target.value)}
-          />
+            <input
+              type="text"
+              placeholder="Phone Number"
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+            />
 
-          <input
-            type="text"
-            placeholder="Address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
+            <input
+              type="text"
+              placeholder="Address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+
           </div>
 
           <button type="submit">Register</button>

@@ -11,7 +11,7 @@ import Support from "../pages/support/Support";
 import Register from "../pages/auth/Register";
 import Profile from "../pages/profile/Profile";
 import AdminDashboard from "../pages/admin/AdminDashboard";
-import Header from "../components/layout/header";
+import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import ChatButton from "../components/ui/ChatButton";
 import Notifications from "../pages/notifications/Notifications";

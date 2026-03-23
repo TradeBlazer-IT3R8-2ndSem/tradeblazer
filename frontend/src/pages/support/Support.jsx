@@ -99,13 +99,19 @@ function Support() {
             </div>
           )}
         </div>
+        <div className={`support-section ${activeSection === "info" ? "active" : ""}`}>
+          <button className="support-btn" onClick={() => toggleSection("info")}>
+            App Information
+          </button>
+          {activeSection === "info" && (
+            <div className="support-content">
+              <h2>App Information</h2>
+              <p>Version 1.0.0</p>
+              <p>Developed by TradeBlazer Team.</p>
+            </div>
+          )}
+        </div>
       </div>
-
-      <footer className="app-info">
-        <h3>App Information</h3>
-        <p>Version 1.0.0</p>
-        <p>Developed by TradeBlazer Team</p>
-      </footer>
     </div>
   );
 }

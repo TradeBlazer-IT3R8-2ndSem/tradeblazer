@@ -4,6 +4,7 @@ import CategoriesDropdown from "../ui/CategoriesDropdown";
 import AccountDropdown from "../ui/AccountDropdown";
 import NotificationsDropdown from "../ui/NotificationsDropdown";
 import "../../styles/components/layout/Header.css";
+import { FaSearch, FaBell, FaThLarge, FaHeart } from "react-icons/fa";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
