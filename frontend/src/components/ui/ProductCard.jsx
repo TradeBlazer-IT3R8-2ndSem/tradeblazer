@@ -2,16 +2,10 @@ import React, { useContext } from "react";
 import { FavoritesContext } from "../../context/FavoritesContext";
 import '../../styles/components/ui/ProductCard.css';
 
-const ProductCard = ({ product, onViewDetails }) => {
+const ProductCard = ({ product, onViewDetails, onEdit, onDelete }) => {
   const { favorites, toggleFavorite } = useContext(FavoritesContext);
 
   const isLiked = favorites.some(p => p.id === product.id); 
-
-  const handleViewDetails = () => {
-    if (onViewDetails) {
-      onViewDetails(product);
-    }
-  };
 
   return (
     <div className="product-card">
@@ -24,11 +18,27 @@ const ProductCard = ({ product, onViewDetails }) => {
           {isLiked ? '❤️' : '🤍'}
         </button>
       </div>
+
       <div className="card-content">
         <span className="category-tag">{product.category}</span>
         <h3>{product.name}</h3>
-        <p className="price">{product.price}</p>
-        <button className="view-btn" onClick={handleViewDetails}>View Details</button>
+        <p className="price">₱{product.price}</p>
+
+        <div className="card-actions">
+          <button className="view-btn" onClick={() => onViewDetails && onViewDetails(product)}>
+            View
+          </button>
+          {onEdit && (
+            <button className="edit-btn" onClick={() => onEdit(product)}>
+              Edit
+            </button>
+          )}
+          {onDelete && (
+            <button className="delete-btn" onClick={() => onDelete(product.id)}>
+              Delete
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

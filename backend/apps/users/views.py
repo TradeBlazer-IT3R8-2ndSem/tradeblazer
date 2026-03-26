@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status, viewsets
 from rest_framework.permissions import AllowAny
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 
 from .models import User
 from .serializers import UserSerializer
@@ -14,7 +14,7 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
 
 
-    parser_classes = (MultiPartParser, FormParser)
+    parser_classes = (JSONParser,MultiPartParser, FormParser)
 
 # -----------------------
 # Register user
@@ -27,24 +27,17 @@ def register_user(request):
         'username', 'email', 'password', 'student_id',
         'phone_number', 'address', 'department'
     ]
-
     for field in required_fields:
         if field not in data:
-            return Response(
-                {"error": f"{field} is required"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": f"{field} is required"}, status=400)
 
     if User.objects.filter(email=data['email']).exists():
-        return Response(
-            {"error": "Email already registered"},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+        return Response({"error": "Email already registered"}, status=400)
 
     user = User.objects.create(
         username=data['username'],
         email=data['email'],
-        password=data['password'],  # plain text (for now)
+        password=data['password'],  # plain text
         student_id=data['student_id'],
         phone_number=data['phone_number'],
         address=data['address'],
@@ -55,7 +48,7 @@ def register_user(request):
     user_data = serializer.data
     user_data['role'] = 'admin' if user.is_staff else 'user'
 
-    return Response({"user": user_data}, status=status.HTTP_201_CREATED)
+    return Response({"user": user_data}, status=201)
 
 
 # -----------------------

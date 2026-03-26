@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
-    profile_image = serializers.ImageField(max_length=None, use_url=True, allow_null=True)
+    profile_image = serializers.ImageField(max_length=None, use_url=True, allow_null=True, required=False)
     class Meta:
         model = User
         fields = [

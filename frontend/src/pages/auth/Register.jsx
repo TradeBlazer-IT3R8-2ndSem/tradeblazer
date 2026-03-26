@@ -17,17 +17,8 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (
-      !name ||
-      !email ||
-      !password ||
-      !confirmPassword ||
-      !studentId ||
-      !department ||
-      !number ||
-      !address
-    ) {
-      alert("Please fill in all fields.");
+    if (!name || !email || !password || !confirmPassword) {
+      alert("Please fill in all required fields.");
       return;
     }
 
@@ -41,21 +32,23 @@ const Register = () => {
       return;
     }
 
+    const payload = {
+      username: name,
+      email,
+      password,
+      student_id: studentId || "",
+      phone_number: number || "",
+      address: address || "",
+      department: department || "",
+    };
+
     try {
       const res = await fetch("http://127.0.0.1:8000/api/users/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username: name,
-          email,
-          password,
-          student_id: studentId,
-          phone_number: number,
-          address,
-          department,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
