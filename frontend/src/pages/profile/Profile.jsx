@@ -6,31 +6,42 @@ import AddPost from "../post/AddPost";
 import ProductDetail from "../dashboard/ProductDetail";
 import EditProfile from "./EditProfile";
 import { PostsContext } from "../../context/PostsContext";
+import { retrieveUser, updateUser } from "../../services/userService.js";
+import { createPost } from "../../services/postService";
 
 const Profile = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
-
-  useEffect(() => {
-    const loggedUser = JSON.parse(localStorage.getItem("userData"));
-    if (!loggedUser) {
-      navigate("/login");
-    } else {
-      setProfile({
-        name: loggedUser.name || "User",
-        studentId: loggedUser.studentId || "N/A",
-        department: loggedUser.department || "N/A",
-        email: loggedUser.email || "N/A",
-        number: loggedUser.number || "N/A",
-        address: loggedUser.address || "N/A",
-        profilePicture: loggedUser.profilePicture || "",
-      });
-    }
-  }, [navigate]);
+  const [loading, setLoading] = useState(true);
 
   const { posts, addPost } = useContext(PostsContext);
 
-  // Only show posts created by the currently logged-in user.
+  // Fetch logged-in user from backend
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("userData"));
+    if (!userData) {
+      navigate("/login");
+      return;
+    }
+    console.log(userData);
+
+    // You can fetch full user details from backend if needed
+    setProfile({
+      id: userData.id,
+      name: userData.username || "User",
+      studentId: userData.student_id || "N/A",
+      department: userData.department || "N/A",
+      email: userData.email || "N/A",
+      number: userData.phone_number || "N/A",
+      address: userData.address || "N/A",
+      profilePicture: userData.profile_image
+        ? `http://127.0.0.1:8000${userData.profile_image}` // <-- prepend backend URL
+        : "",
+    });
+    setLoading(false);
+  }, [navigate]);
+
+  
   const userPosts = profile
     ? posts.filter((post) => post.seller === profile.name)
     : [];
@@ -40,8 +51,32 @@ const Profile = () => {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const handleAddPost = (newPost) => {
-    addPost(newPost, profile);
+  const handleAddPost = async (newPost) => {
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      if (!userData) throw new Error("User not logged in");
+
+      const formData = new FormData();
+      formData.append("title", newPost.title);
+      formData.append("description", newPost.description);
+      formData.append("price", newPost.price);
+      formData.append("category", newPost.category);
+      formData.append("seller", userData.id); // backend expects ID
+      if (newPost.image) {
+        formData.append("image", newPost.image);
+      }
+
+      // 🔹 POST to backend
+      const savedPost = await createPost(formData); 
+
+      // 🔹 Update local state with backend response
+      addPost(savedPost, { name: userData.username });
+
+      setShowAddPost(false);
+    } catch (error) {
+      console.error("Failed to post product:", error);
+      alert("Failed to post product: " + error.message);
+    }
   };
 
   const handleViewDetails = (product) => {
@@ -53,29 +88,44 @@ const Profile = () => {
     setShowEditProfile(true);
   };
 
-  const handleUpdateProfile = (updatedProfile) => {
-    setProfile(updatedProfile);
-    localStorage.setItem("userData", JSON.stringify(updatedProfile));
+  const handleUpdateProfile = async (formData, userId) => {
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/users/${userId}/`, {
+        method: "PATCH",
+        body: formData,
+      });
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const updatedUsers = users.map((u) => {
-      if (u.email === updatedProfile.email) {
-        return { ...u, ...updatedProfile, password: u.password };
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error("Backend error:", data);
+        throw new Error(JSON.stringify(data));
       }
-      return u;
-    });
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
 
-    setShowEditProfile(false);
+      // Update profile with backend URL
+      setProfile((prev) => ({
+        ...prev,
+        ...data,
+        profilePicture: data.profile_image || prev.profilePicture,
+      }));
+
+      const userData = JSON.parse(localStorage.getItem("userData")) || {};
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({ ...userData, ...data })
+      );
+
+      setShowEditProfile(false);
+    } catch (err) {
+      console.error("Failed to update profile:", err.message);
+      alert("Failed to update profile: " + err.message);
+    }
   };
 
-  if (!profile) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="profile-container">
-
       <div className="profile-left">
         <div className="profile-header">
           <button className="edit-profile-btn" onClick={handleEditProfile}>
@@ -84,7 +134,9 @@ const Profile = () => {
           <div className="profile-picture">
             {profile.profilePicture ? (
               <img src={profile.profilePicture} alt="Profile" />
-            ) : null}
+            ) : (
+              <div className="placeholder">No Image</div>
+            )}
           </div>
           <h2 className="profile-name">{profile.name}</h2>
         </div>
@@ -117,15 +169,7 @@ const Profile = () => {
               {userPosts.map((post) => (
                 <ProductCard
                   key={post.id}
-                  product={{
-                    id: post.id,
-                    name: post.title,
-                    price: post.price,
-                    category: post.category,
-                    image: post.image,
-                    description: post.description,
-                    seller: post.seller,
-                  }}
+                  product={post}
                   onViewDetails={handleViewDetails}
                 />
               ))}
@@ -134,21 +178,22 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* add post modal */}
+      {/* Add Post Modal */}
       <AddPost
         isOpen={showAddPost}
         onClose={() => setShowAddPost(false)}
         onSubmit={handleAddPost}
       />
 
-      {/* edit profile modal */}
+      {/* Edit Profile Modal */}
       <EditProfile
         isOpen={showEditProfile}
         profile={profile}
         onClose={() => setShowEditProfile(false)}
-        onSubmit={handleUpdateProfile}
+        onSubmit={(data, id) => handleUpdateProfile(data, id)}
       />
 
+      {/* Product Detail Modal */}
       <ProductDetail
         product={selectedProduct}
         isOpen={showDetailModal}

@@ -1,15 +1,20 @@
 from rest_framework import serializers
 from .models import Post, Category
 
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ["id", "name", "created_at"]
 
+
 class PostSerializer(serializers.ModelSerializer):
     seller = serializers.StringRelatedField(read_only=True)
-    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
-    image = serializers.ImageField(required=False)
+
+    # ✅ IMPORTANT: accept category ID
+    category = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all()
+    )
 
     class Meta:
         model = Post
@@ -20,6 +25,14 @@ class PostSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id", "seller", "created_at", "updated_at"]
 
+    # ✅ FIX PRICE (accept string → convert to decimal)
+    def validate_price(self, value):
+        try:
+            return float(value)
+        except:
+            raise serializers.ValidationError("Invalid price format")
+
+    # ✅ FIX OUTPUT IMAGE URL
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         request = self.context.get("request")

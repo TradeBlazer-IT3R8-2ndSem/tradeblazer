@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
+    profile_image = serializers.ImageField(max_length=None, use_url=True, allow_null=True)
     class Meta:
         model = User
         fields = [
@@ -9,4 +10,3 @@ class UserSerializer(serializers.ModelSerializer):
             'phone_number', 'address', 'department',
             'profile_image', 'created_at', 'password'
         ]
-        read_only_fields = ['id', 'created_at']

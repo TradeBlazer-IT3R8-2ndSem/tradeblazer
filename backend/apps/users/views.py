@@ -1,10 +1,24 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
+from rest_framework.permissions import AllowAny
+from rest_framework.parsers import MultiPartParser, FormParser
+
 from .models import User
 from .serializers import UserSerializer
 
+# 🔥 USER VIEWSET (NOW SUPPORTS IMAGE UPLOAD)
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
+
+    parser_classes = (MultiPartParser, FormParser)
+
+# -----------------------
 # Register user
+# -----------------------
 @api_view(['POST'])
 def register_user(request):
     data = request.data
@@ -30,7 +44,7 @@ def register_user(request):
     user = User.objects.create(
         username=data['username'],
         email=data['email'],
-        password=data['password'],
+        password=data['password'],  # plain text (for now)
         student_id=data['student_id'],
         phone_number=data['phone_number'],
         address=data['address'],
@@ -43,7 +57,10 @@ def register_user(request):
 
     return Response({"user": user_data}, status=status.HTTP_201_CREATED)
 
+
+# -----------------------
 # Login user
+# -----------------------
 @api_view(['POST'])
 def login_user(request):
     data = request.data
