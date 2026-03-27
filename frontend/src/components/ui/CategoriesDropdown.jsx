@@ -1,8 +1,26 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const CategoriesDropdown = () => {
   const [open, setOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await fetch("http://127.0.0.1:8000/api/categories/", {
+          headers: { Authorization: `Token ${token}` },
+        });
+        const data = await res.json();
+        setCategories(data);
+      } catch (err) {
+        console.error("Failed to fetch categories:", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   return (
     <div
@@ -16,12 +34,11 @@ const CategoriesDropdown = () => {
 
       {open && (
         <div className="dropdown-menu">
-          <Link to="/category/electronics">Electronics</Link>
-          <Link to="/category/fashion">Fashion</Link>
-          <Link to="/category/home">Home & Living</Link>
-          <Link to="/category/sports">Sports</Link>
-          <Link to="/category/beauty">Beauty</Link>
-          <Link to="/category/gifts">Gifts</Link>
+          {categories.map((cat) => (
+            <Link key={cat.id} to={`/category/${cat.id}`}>
+              {cat.name}
+            </Link>
+          ))}
         </div>
       )}
     </div>

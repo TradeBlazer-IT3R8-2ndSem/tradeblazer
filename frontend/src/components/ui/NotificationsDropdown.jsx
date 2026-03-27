@@ -1,19 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/components/ui/NotificationsDropdown.css";
+import { NotificationsContext } from "../../context/NotificationsContext";
 
 const NotificationsDropdown = () => {
   const navigate = useNavigate();
-  const names = ["Hanji", "Syntyche", "Shandie", "Jomar", "Cypress", "Kurt", "Nikka", "Kyle", "Bryan", "Marjorie"];
-
-  const [notifications, setNotifications] = useState([
-    { id: 2, title: "Favorite", message: `${names[0]} added your product to their favorites.`, read: false, time: new Date("2026-03-17T10:00:00") },
-    { id: 3, title: "New Product", message: `${names[1]} posted a new product.`, read: false, time: new Date("2026-03-17T08:00:00") },
-    { id: 4, title: "Favorite", message: `${names[2]} added your product to their favorites.`, read: false, time: new Date("2026-03-16T15:00:00") },
-    { id: 5, title: "New Product", message: `${names[3]} posted a new product.`, read: false, time: new Date("2026-03-16T12:00:00") },
-    { id: 6, title: "Favorite", message: `${names[4]} added your product to their favorites.`, read: false, time: new Date("2026-03-15T18:00:00") },
-    { id: 7, title: "New Product", message: `${names[5]} posted a new product.`, read: false, time: new Date("2026-03-15T14:00:00") },
-  ]);
+  const { notifications, markAsRead } = useContext(NotificationsContext);
 
   const timeAgo = (date) => {
     const now = new Date();
@@ -24,32 +16,24 @@ const NotificationsDropdown = () => {
     return `${Math.floor(seconds / 86400)}d ago`;
   };
 
-  const sortedNotifications = [...notifications]
-    .sort((a, b) => b.time - a.time)
-    .slice(0, 5);
-    
-  const markAsRead = (id) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-    );
-  };
+  const sortedNotifications = [...notifications].sort((a, b) => b.time - a.time).slice(0, 5);
 
   const handleNotificationClick = (notif) => {
-    markAsRead(notif.id); // 👈 this changes it from unread → read
+    markAsRead(notif.id);
+    navigate(`/notifications/${notif.id}`);
   };
-    
+
   const handleSeeMore = () => {
     navigate("/notifications");
   };
 
   return (
     <div className="notifications-hover-container">
-      <span className="notification-title" onClick = {() => navigate("/notifications")}>
+      <span className="notification-title" onClick={handleSeeMore}>
         Notifications
         <span className="badge-count">{notifications.filter(n => !n.read).length}</span>
       </span>
 
-      {/* Dropdown appears below the word like categories */}
       <div className="notifications-dropdown">
         {sortedNotifications.map((notif) => (
           <div

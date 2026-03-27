@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import AppRoutes from './routes/AppRoutes';
 import './styles/global.css';
 import { FavoritesProvider } from './context/FavoritesContext';
+import { NotificationsProvider } from './context/NotificationsContext';
 import { PostsProvider } from './context/PostsContext';
 import { ChatProvider } from './context/ChatContext';
 
@@ -10,11 +11,13 @@ function App() {
   return (
     <PostsProvider>
       <FavoritesProvider>
-        <ChatProvider>
-          <Router>
-            <AppRoutes />
-          </Router>
-        </ChatProvider>
+        <NotificationsProvider>
+          <ChatProvider>
+            <Router>
+              <AppRoutes />
+            </Router>
+          </ChatProvider>
+        </NotificationsProvider>
       </FavoritesProvider>
     </PostsProvider>
   );

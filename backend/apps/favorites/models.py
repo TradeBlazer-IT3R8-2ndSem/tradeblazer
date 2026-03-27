@@ -8,7 +8,7 @@ class Favorite(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'post')  # prevent duplicate favorites
+        unique_together = ('user', 'post')
 
     def __str__(self):
         return f"{self.user.username} favorited {self.post.title}"
