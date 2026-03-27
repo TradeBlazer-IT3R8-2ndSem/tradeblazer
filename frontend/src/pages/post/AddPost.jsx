@@ -7,7 +7,7 @@ const AddPost = ({ isOpen, onClose, onSubmit }) => {
     price: "",
     category: "",
     description: "",
-    image: null,
+    image: null,   // store raw File
   });
 
   const [preview, setPreview] = useState(null);
@@ -20,15 +20,10 @@ const AddPost = ({ isOpen, onClose, onSubmit }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData({ ...formData, image: reader.result });
-        setPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setFormData({ ...formData, image: file }); // ✅ keep raw File
+      setPreview(URL.createObjectURL(file));     // ✅ preview with blob URL
     }
   };
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -88,10 +83,14 @@ const AddPost = ({ isOpen, onClose, onSubmit }) => {
               required
             >
               <option value="">Select Category</option>
-              <option value="Gifts">Gifts</option>
-              <option value="Electronics">Electronics</option>
-              <option value="Fashion">Fashion</option>
-              <option value="Others">Others</option>
+              <option value="1">Electronics</option>
+              <option value="2">Gifts</option>
+              <option value="3">Fashion</option>
+              <option value="4">Home & Living</option>
+              <option value="5">Sports</option>
+              <option value="6">Beauty</option>
+              <option value="7">Clothes</option>
+              <option value="8">Accessories</option>
             </select>
           </div>
 

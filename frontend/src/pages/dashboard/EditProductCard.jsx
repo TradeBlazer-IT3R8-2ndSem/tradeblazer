@@ -30,13 +30,22 @@ const EditProductCard = ({ editFormData, onEditChange, onEditSubmit, onCancelEdi
 
         <div className="form-group">
           <label>Category</label>
-          <input
-            type="text"
+          {/* ✅ Dropdown instead of text input */}
+          <select
             name="category"
             value={editFormData.category}
             onChange={onEditChange}
-            placeholder="Enter category"
-          />
+          >
+            <option value="">Select Category</option>
+            <option value="1">Electronics</option>
+            <option value="2">Gifts</option>
+            <option value="3">Fashion</option>
+            <option value="4">Home & Living</option>
+            <option value="5">Sports</option>
+            <option value="6">Beauty</option>
+            <option value="7">Clothes</option>
+            <option value="8">Accessories</option>
+          </select>
         </div>
 
         <div className="form-group">

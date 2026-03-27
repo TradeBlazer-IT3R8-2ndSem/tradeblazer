@@ -16,6 +16,18 @@ const Profile = () => {
 
   const { posts, addPost } = useContext(PostsContext);
 
+  // Map category IDs to names
+  const categoryMap = {
+    1: "Electronics",
+    2: "Gifts",
+    3: "Fashion",
+    4: "Home & Living",
+    5: "Sports",
+    6: "Beauty",
+    7: "Clothes",
+    8: "Accessories",
+  };
+
   // Fetch logged-in user from backend
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
@@ -25,7 +37,6 @@ const Profile = () => {
     }
     console.log(userData);
 
-    // You can fetch full user details from backend if needed
     setProfile({
       id: userData.id,
       name: userData.username || "User",
@@ -35,13 +46,12 @@ const Profile = () => {
       number: userData.phone_number || "N/A",
       address: userData.address || "N/A",
       profilePicture: userData.profile_image
-        ? `http://127.0.0.1:8000${userData.profile_image}` // <-- prepend backend URL
+        ? `http://127.0.0.1:8000${userData.profile_image}`
         : "",
     });
     setLoading(false);
   }, [navigate]);
 
-  
   const userPosts = profile
     ? posts.filter((post) => post.seller === profile.name)
     : [];
@@ -60,16 +70,21 @@ const Profile = () => {
       formData.append("title", newPost.title);
       formData.append("description", newPost.description);
       formData.append("price", newPost.price);
-      formData.append("category", newPost.category);
-      formData.append("seller", userData.id); // backend expects ID
+      formData.append("category", Number(newPost.category));
+
       if (newPost.image) {
         formData.append("image", newPost.image);
       }
 
-      // 🔹 POST to backend
-      const savedPost = await createPost(formData); 
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ": ", pair[1]);
+      }
 
-      // 🔹 Update local state with backend response
+      const savedPost = await createPost(formData);
+
+      // Inject category name into savedPost before adding
+      savedPost.categoryName = categoryMap[savedPost.category];
+
       addPost(savedPost, { name: userData.username });
 
       setShowAddPost(false);
@@ -102,7 +117,6 @@ const Profile = () => {
         throw new Error(JSON.stringify(data));
       }
 
-      // Update profile with backend URL
       setProfile((prev) => ({
         ...prev,
         ...data,
@@ -169,7 +183,10 @@ const Profile = () => {
               {userPosts.map((post) => (
                 <ProductCard
                   key={post.id}
-                  product={post}
+                  product={{
+                    ...post,
+                    categoryName: categoryMap[post.category], // ✅ inject name
+                  }}
                   onViewDetails={handleViewDetails}
                 />
               ))}
@@ -178,14 +195,12 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Add Post Modal */}
       <AddPost
         isOpen={showAddPost}
         onClose={() => setShowAddPost(false)}
         onSubmit={handleAddPost}
       />
 
-      {/* Edit Profile Modal */}
       <EditProfile
         isOpen={showEditProfile}
         profile={profile}
@@ -193,7 +208,6 @@ const Profile = () => {
         onSubmit={(data, id) => handleUpdateProfile(data, id)}
       />
 
-      {/* Product Detail Modal */}
       <ProductDetail
         product={selectedProduct}
         isOpen={showDetailModal}

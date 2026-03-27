@@ -15,12 +15,11 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [AllowAny]
-
-    # ✅ REQUIRED FOR IMAGE UPLOAD
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser]  # required for images
 
     def get_serializer_context(self):
         return {"request": self.request}
 
     def perform_create(self, serializer):
-        serializer.save()  # no auth for now
+        # Optionally set seller if you want logged-in users
+        serializer.save()

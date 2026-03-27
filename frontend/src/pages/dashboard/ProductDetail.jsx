@@ -49,7 +49,7 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
 
   const handleEditClick = () => {
     setEditFormData({
-      title: product.name,
+      title: product.title,   // ✅ use title instead of name
       price: product.price,
       category: product.category,
       description: product.description,
@@ -70,14 +70,14 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
 
     const updatedProduct = {
       ...product,
-      name: editFormData.title,
+      title: editFormData.title,
       price: editFormData.price,
       category: editFormData.category,
       description: editFormData.description,
     };
 
     updatePost(product.id, {
-      title: updatedProduct.name,
+      title: updatedProduct.title,
       price: updatedProduct.price,
       category: updatedProduct.category,
       description: updatedProduct.description,
@@ -95,7 +95,6 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      
       <div className="product-detail-modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-btn" onClick={onClose}>✕</button>
         
@@ -108,12 +107,11 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
           />
         ) : (
           <div className="product-detail-content">
-            
             {/* IMAGE */}
             <div className="product-image-container">
               <img 
                 src={product.image || 'https://via.placeholder.com/300'} 
-                alt={product.name} 
+                alt={product.title} 
                 className="product-image" 
               />
 
@@ -129,14 +127,18 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
             {/* INFO */}
             <div className="product-info">
               <div className="product-header">
-                <h2>{product.name}</h2>
+                <h2>{product.title}</h2>
               </div>
 
               {product.seller && (
                 <p className="seller">Seller: {product.seller}</p>
               )}
 
-              <p className="category">Category: {product.category}</p>
+              {/* ✅ Show category name */}
+              <p className="category">
+                Category: {product.categoryName || "Uncategorized"}
+              </p>
+
               <p className="price">₱{product.price}</p>
 
               {product.description && (
@@ -151,7 +153,6 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
                       Chat Seller
                     </button>
 
-                    {}
                     <button 
                       className="report-btn"
                       onClick={() => setShowReport(true)}
@@ -189,7 +190,6 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
         onClose={() => setShowReport(false)}
         product={product}
       />
-
     </div>
   );
 };
