@@ -4,6 +4,7 @@ import OverviewPanel from './panels/Overview';
 import UserManagement from './panels/UserManagement';
 import ProductManagement from './panels/ProductManagement';
 import NotificationPanel from './panels/NotificationPanel';
+import ReportsPanel from "./panels/ReportsPanel";
 import '../../styles/pages/admin/AdminDashboard.css';
 
 export default function AdminDashboard() {
@@ -20,6 +21,8 @@ export default function AdminDashboard() {
         return <ProductManagement />;
       case 'notifications':
         return <NotificationPanel />;
+      case 'reports':
+        return <ReportsPanel />;
       default:
         return <OverviewPanel />;
     }

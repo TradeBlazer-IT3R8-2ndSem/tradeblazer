@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/pages/profile/ReportUser.css";
+import api from "../../services/api";
 
 const ReportUser = ({ isOpen, onClose, product }) => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -14,71 +15,57 @@ const ReportUser = ({ isOpen, onClose, product }) => {
 
   if (!isOpen || !product) return null;
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!reason) {
       alert("Please select a reason");
       return;
     }
 
-    const reportData = {
-      reporter: currentUser?.name,
-      reportedUser: product.seller,
-      productId: product.id,
-      productName: product.name,
-      type: reportType,
-      reason,
-      details,
-      createdAt: new Date().toISOString(),
-    };
+    try {
+      const reportData = {
+        reporter: currentUser?.id,        // backend expects user IDs
+        reported_user: product.seller_id, // seller ID from product
+        reason: `${reason} - ${details}`, // combine reason + details
+      };
 
-    // Save locally (you can replace with API)
-    const existingReports = JSON.parse(localStorage.getItem("reports")) || [];
-    const updatedReports = [...existingReports, reportData];
-    localStorage.setItem("reports", JSON.stringify(updatedReports));
+      await api.post("/reports/", reportData); // ✅ call backend
 
-    alert("Report submitted successfully!");
-    onClose();
+      alert("Report submitted successfully!");
+      onClose();
 
-    // reset
-    setReason("");
-    setDetails("");
-    setReportType("user");
+      // reset
+      setReason("");
+      setDetails("");
+      setReportType("user");
+    } catch (err) {
+      console.error("Failed to submit report:", err);
+      alert("Error submitting report. Please try again.");
+    }
   };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div
-        className="report-modal"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="report-modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-btn" onClick={onClose}>✕</button>
 
         <h2>Report</h2>
 
         <div className="report-info">
           <p><strong>Seller:</strong> {product.seller}</p>
-          <p><strong>Product:</strong> {product.name}</p>
+          <p><strong>Product:</strong> {product.title}</p>
         </div>
 
-        {/* TYPE */}
         <div className="report-group">
           <label>Report Type</label>
-          <select
-            value={reportType}
-            onChange={(e) => setReportType(e.target.value)}
-          >
+          <select value={reportType} onChange={(e) => setReportType(e.target.value)}>
             <option value="user">User</option>
             <option value="product">Product</option>
           </select>
         </div>
 
-        {/* REASON */}
         <div className="report-group">
           <label>Reason</label>
-          <select
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-          >
+          <select value={reason} onChange={(e) => setReason(e.target.value)}>
             <option value="">Select reason</option>
             <option value="spam">Spam</option>
             <option value="scam">Scam</option>
@@ -88,7 +75,6 @@ const ReportUser = ({ isOpen, onClose, product }) => {
           </select>
         </div>
 
-        {/* DETAILS */}
         <div className="report-group">
           <label>Additional Details</label>
           <textarea
@@ -98,14 +84,9 @@ const ReportUser = ({ isOpen, onClose, product }) => {
           />
         </div>
 
-        {/* ACTIONS */}
         <div className="report-actions">
-          <button className="cancel-btn" onClick={onClose}>
-            Cancel
-          </button>
-          <button className="submit-btn" onClick={handleSubmit}>
-            Submit Report
-          </button>
+          <button className="cancel-btn" onClick={onClose}>Cancel</button>
+          <button className="submit-btn" onClick={handleSubmit}>Submit Report</button>
         </div>
       </div>
     </div>

@@ -6,12 +6,15 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const userData = JSON.parse(localStorage.getItem("userData"));
-  if (userData?.token) {
-    config.headers.Authorization = `Token ${userData.token}`;
+  const username = localStorage.getItem("username");
+  const password = localStorage.getItem("password");
+  if (username && password) {
+    const token = btoa(`${username}:${password}`); // base64 encode
+    config.headers.Authorization = `Basic ${token}`;
   }
   return config;
 });
+
 
 export const login = async (username, password) => {
   try {
@@ -37,27 +40,22 @@ export const getCategories = async () => {
   const res = await api.get("/categories/");
   return res.data;
 };
-
 export const getBestSellingPosts = async () => {
   const res = await api.get("/posts/best-selling/");
   return res.data;
 };
-
 
 export const getPosts = async () => {
   const res = await api.get("/posts/");
   return res.data;
 };
 
-// ✅ Create Post
-// src/services/postService.js
-
 // CREATE POST
 export const createPost = async (formData) => {
   const res = await fetch("http://127.0.0.1:8000/api/posts/", {
     method: "POST",
     headers: {
-      Authorization: `Token ${localStorage.getItem("token")}`, // Shan’s token stored here
+      Authorization: `Token ${localStorage.getItem("token")}`,
     },
     body: formData,
   });
@@ -79,6 +77,21 @@ export const updatePostApi = async (postId, updatedData) => {
 // ✅ Delete Post
 export const deletePostApi = async (postId) => {
   await api.delete(`/posts/${postId}/`);
+};
+
+export const getOrCreateChatRoom = async (otherUserId) => {
+  const res = await api.post("/chatrooms/get_or_create/", { other_user_id: otherUserId });
+  return res.data;
+};
+
+export const getMessages = async (chatroomId) => {
+  const res = await api.get(`/messages/?chatroom=${chatroomId}`);
+  return res.data;
+};
+
+export const sendMessage = async (chatroomId, content) => {
+  const res = await api.post("/messages/", { chatroom: chatroomId, content });
+  return res.data;
 };
 
 export default api;

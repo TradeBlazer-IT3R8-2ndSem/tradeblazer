@@ -11,105 +11,51 @@ const initialUsers = [
 
 export default function ChatPanel({ selectedSeller, onClose }) {
   const [users, setUsers] = useState(initialUsers);
-  const [selectedUser, setSelectedUser] = useState(() => {
-    if (selectedSeller) {
-      return initialUsers.find((user) => user.name === selectedSeller) || initialUsers[0];
-    }
-    return initialUsers[0];
-  });
+  const [selectedUser, setSelectedUser] = useState(initialUsers[0]);
+  const [messagesByUser, setMessagesByUser] = useState({});
   const [input, setInput] = useState("");
   const [userSearch, setUserSearch] = useState("");
 
+  // Handle opening chat with seller
   useEffect(() => {
     if (selectedSeller) {
-      const seller = users.find((user) => user.name === selectedSeller);
+      const normalized = selectedSeller.trim().toLowerCase();
+      const seller = users.find((u) => u.name.toLowerCase() === normalized);
+
       if (seller) {
         setSelectedUser(seller);
       } else {
-        setUsers((prev) => {
-          const nextId = prev.length ? Math.max(...prev.map((u) => u.id )) + 1 : 1;
-          const newUser = { id: nextId, name: selectedSeller };
-          return [...prev, newUser];
-        });
-      }
-    }
-  }, [selectedSeller]);
-
-  useEffect(() => {
-    if (!selectedSeller) return;
-    const seller = users.find((user) => user.name === selectedSeller);
-    if (seller) setSelectedUser(seller);
-  }, [users, selectedSeller]);
-
-  useEffect(() => {
-    if (!selectedUser) return;
-    if (!messagesByUser[selectedUser.id]) {
-      setMessagesByUser((prev) => {
-        const updated = {
+        const nextId = users.length ? Math.max(...users.map((u) => u.id)) + 1 : 1;
+        const newUser = { id: nextId, name: selectedSeller.trim() };
+        setUsers((prev) => [...prev, newUser]);
+        setSelectedUser(newUser);
+        setMessagesByUser((prev) => ({
           ...prev,
-          [selectedUser.id]: [
-            { id: Date.now(), from: "bot", text: `Hello ${selectedUser.name}!` },
-          ],
-        };
-        localStorage.setItem("chat_messages", JSON.stringify(updated));
-        return updated;
-      });
-    }
-  }, [selectedUser]);
-
-  const [messagesByUser, setMessagesByUser] = useState(() => {
-    const saved = localStorage.getItem("chat_messages");
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch {
-        
+          [newUser.id]: [], // start empty
+        }));
       }
     }
-
-    const init = {};
-    initialUsers.forEach((u) => {
-      init[u.id] = [{ id: 1, from: "bot", text: `Hello ${u.name}!` }];
-    });
-    return init;
-  });
+  }, [selectedSeller, users]);
 
   const handleSend = () => {
     if (!input.trim()) return;
-
-    const newMessage = {
-      id: Date.now(),
-      from: "user",
-      text: input,
-    };
-
-    setMessagesByUser((prev) => {
-      const prevMessages = prev[selectedUser.id] || [];
-      const updated = {
-        ...prev,
-        [selectedUser.id]: [...prevMessages, newMessage],
-      };
-      localStorage.setItem("chat_messages", JSON.stringify(updated));
-      return updated;
-    });
-
+    const newMessage = { id: crypto.randomUUID(), from: "user", text: input };
+    setMessagesByUser((prev) => ({
+      ...prev,
+      [selectedUser.id]: [...(prev[selectedUser.id] || []), newMessage],
+    }));
     setInput("");
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSend();
-    }
+    if (e.key === "Enter") handleSend();
   };
 
   return (
     <div className="chat-box">
-
       <div className="chat-top-header">
         <span>Chat</span>
-        {onClose && (
-          <button className="chat-close-btn" onClick={onClose}>×</button>
-        )}
+        {onClose && <button className="chat-close-btn" onClick={onClose}>×</button>}
       </div>
 
       <div className="chat-sub-header">
@@ -127,28 +73,26 @@ export default function ChatPanel({ selectedSeller, onClose }) {
       </div>
 
       <div className="chat-body">
-
         {/* LEFT SIDE */}
         <div className="chat-users">
-          {(users.filter(user => user.name.toLowerCase().includes(userSearch.toLowerCase()))).map((user) => (
-            <div
-              key={user.id}
-              className={`user-item ${
-                selectedUser.id === user.id ? "active" : ""
-              }`}
-              onClick={() => setSelectedUser(user)}
-            >
-              {user.name}
-            </div>
-          ))}
+          {users
+            .filter((u) => u.name.toLowerCase().includes(userSearch.toLowerCase()))
+            .map((u) => (
+              <div
+                key={u.id}
+                className={`user-item ${selectedUser.id === u.id ? "active" : ""}`}
+                onClick={() => setSelectedUser(u)}
+              >
+                {u.name}
+              </div>
+            ))}
         </div>
 
         {/* RIGHT SIDE */}
         <div className="chat-main">
-
           <div className="chat-messages">
-            {(messagesByUser[selectedUser.id] || []).map((m) => (
-              <p key={m.id} className={`message ${m.from}`}>
+            {(messagesByUser[selectedUser.id] || []).map((m, idx) => (
+              <p key={idx} className={`message ${m.from}`}>
                 {m.text}
               </p>
             ))}
@@ -162,13 +106,9 @@ export default function ChatPanel({ selectedSeller, onClose }) {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
             />
-            <button className="send-btn" onClick={handleSend}>
-              Send
-            </button>
+            <button className="send-btn" onClick={handleSend}>Send</button>
           </div>
-
         </div>
-
       </div>
     </div>
   );

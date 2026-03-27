@@ -27,7 +27,6 @@ const Home = () => {
     }
   }, [navigate]);
 
-  // ✅ Fetch Best Selling
   useEffect(() => {
     const fetchBestSelling = async () => {
       try {
@@ -39,8 +38,7 @@ const Home = () => {
     };
     fetchBestSelling();
   }, []);
-
-  // ✅ Fetch Categories
+  
   useEffect(() => {
     const fetchCategories = async () => {
       try {

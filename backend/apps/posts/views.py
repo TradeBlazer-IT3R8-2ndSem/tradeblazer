@@ -34,4 +34,4 @@ class BestSellingPostsView(generics.ListAPIView):
     serializer_class = PostSerializer
 
     def get_queryset(self):
-        return Post.objects.filter(is_active=True).order_by("-sold_count")[:5]
+        return Post.objects.filter(is_active=True).order_by("-created_at")[:5]

@@ -22,6 +22,16 @@ export default function AdminSidebar({ activePanel, setActivePanel }) {
       id: 'notifications',
       label: 'Notifications',
       description: 'Send announcements'
+    },
+    {
+      id: 'reports',
+      label: 'Reports',
+      description: 'View and manage user/product reports'
+    },
+    {
+      id: 'home',   // ✅ new item
+      label: 'Go to Home',
+      description: 'Return to main site'
     }
   ];
 
@@ -42,7 +52,13 @@ export default function AdminSidebar({ activePanel, setActivePanel }) {
           <button
             key={item.id}
             className={`admin-nav-item ${activePanel === item.id ? 'active' : ''}`}
-            onClick={() => setActivePanel(item.id)}
+            onClick={() => {
+              if (item.id === 'home') {
+                window.location.href = '/'; // ✅ redirect to home
+              } else {
+                setActivePanel(item.id);
+              }
+            }}
             title={item.description}
           >
             <span className="admin-nav-icon">{item.icon}</span>
