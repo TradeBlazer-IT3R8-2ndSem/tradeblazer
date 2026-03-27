@@ -9,14 +9,15 @@ class Category(models.Model):
         return self.name
 
 class Post(models.Model):
-    title = models.CharField(max_length=200)               
-    description = models.TextField()                       
+    title = models.CharField(max_length=200)
+    description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='posts/', blank=True, null=True) 
+    image = models.ImageField(upload_to='posts/', blank=True, null=True)
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts', null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name='posts')
-    stock = models.PositiveIntegerField(default=1)      
-    is_active = models.BooleanField(default=True)           
+    stock = models.PositiveIntegerField(default=1)
+    sold_count = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

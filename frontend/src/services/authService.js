@@ -1,12 +1,14 @@
 import axios from "axios";
 import api from "./api";
 
-export const getToken = async (username, password) => {
-  const res = await axios.post("http://127.0.0.1:8000/api-token-auth/", {
+export const login = async (username, password) => {
+  const res = await axios.post("http://127.0.0.1:8000/api/token/", {
     username,
     password,
   });
-  return res.data;
+  const { token } = res.data;
+  localStorage.setItem("token", token); // ✅ store token
+  return token;
 };
 
 export const register = async (data) => {

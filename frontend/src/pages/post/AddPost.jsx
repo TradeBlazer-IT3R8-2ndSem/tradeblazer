@@ -1,45 +1,42 @@
 import { useState } from "react";
 import "../../styles/pages/post/AddPost.css"; 
+import { createPost } from "../../services/api";
 
-const AddPost = ({ isOpen, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState({
-    title: "",
-    price: "",
-    category: "",
-    description: "",
-    image: null,   // store raw File
-  });
-
+const AddPost = ({ isOpen, onClose }) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFormData({ ...formData, image: file }); // ✅ keep raw File
-      setPreview(URL.createObjectURL(file));     // ✅ preview with blob URL
+      setImage(file);
+      setPreview(URL.createObjectURL(file));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.image) return alert("Please upload an image!");
 
-    onSubmit(formData);
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("category", category);
+    if (image) formData.append("image", image);
 
-    setFormData({
-      title: "",
-      price: "",
-      category: "",
-      description: "",
-      image: null,
-    });
-    setPreview(null);
-    onClose();
+    try {
+      const newPost = await createPost(formData);
+      console.log("Post created:", newPost);
+      // ✅ reset form after success
+      setTitle(""); setDescription(""); setPrice(""); setCategory(""); setImage(null); setPreview(null);
+      onClose();
+    } catch (err) {
+      console.error("Failed to post product:", err);
+    }
   };
 
   if (!isOpen) return null;
@@ -54,9 +51,8 @@ const AddPost = ({ isOpen, onClose, onSubmit }) => {
             <label>Product Title</label>
             <input
               type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="Enter product title"
               required
             />
@@ -66,9 +62,8 @@ const AddPost = ({ isOpen, onClose, onSubmit }) => {
             <label>Price (₱)</label>
             <input
               type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
               placeholder="Enter price"
               required
             />
@@ -77,9 +72,8 @@ const AddPost = ({ isOpen, onClose, onSubmit }) => {
           <div className="form-group">
             <label>Category</label>
             <select
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
               required
             >
               <option value="">Select Category</option>
@@ -97,10 +91,9 @@ const AddPost = ({ isOpen, onClose, onSubmit }) => {
           <div className="form-group">
             <label>Description</label>
             <textarea
-              name="description"
               rows="4"
-              value={formData.description}
-              onChange={handleChange}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter product description"
               required
             />

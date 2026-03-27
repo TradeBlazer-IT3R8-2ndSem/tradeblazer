@@ -47,17 +47,62 @@
   font-weight: bold;
 }
 
-.view-btn {
-  width: 100%;
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 10px;
+.price {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 6px;
+  color: #333;
 }
 
+/* Action buttons container */
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* Base style for all action buttons */
+.card-actions button {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px; /* space between icon and text */
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+/* View button */
+.view-btn {
+  background: var(--primary);
+  color: #fff;
+}
 .view-btn:hover {
   background: var(--primary-dark);
+  transform: scale(1.05);
+}
+
+/* Edit button */
+.edit-btn {
+  background: #4caf50; /* green */
+  color: #fff;
+}
+.edit-btn:hover {
+  background: #43a047;
+  transform: scale(1.05);
+}
+
+/* Delete button */
+.delete-btn {
+  background: #f44336; /* red */
+  color: #fff;
+}
+.delete-btn:hover {
+  background: #d32f2f;
+  transform: scale(1.05);
 }

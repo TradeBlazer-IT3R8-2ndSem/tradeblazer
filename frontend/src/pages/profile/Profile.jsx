@@ -5,8 +5,8 @@ import ProductCard from "../../components/ui/ProductCard";
 import AddPost from "../post/AddPost";
 import ProductDetail from "../dashboard/ProductDetail";
 import EditProfile from "./EditProfile";
+import EditPost from "../../components/ui/EditPost";   // ✅ new component
 import { PostsContext } from "../../context/PostsContext";
-import { retrieveUser, updateUser } from "../../services/userService.js";
 import { createPost } from "../../services/postService";
 
 const Profile = () => {
@@ -14,7 +14,7 @@ const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const { posts, addPost } = useContext(PostsContext);
+  const { posts, addPost, deletePost, updatePost } = useContext(PostsContext);
 
   // Map category IDs to names
   const categoryMap = {
@@ -28,14 +28,13 @@ const Profile = () => {
     8: "Accessories",
   };
 
-  // Fetch logged-in user from backend
+  // Fetch logged-in user
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (!userData) {
       navigate("/login");
       return;
     }
-    console.log(userData);
 
     setProfile({
       id: userData.id,
@@ -53,14 +52,16 @@ const Profile = () => {
   }, [navigate]);
 
   const userPosts = profile
-    ? posts.filter((post) => post.seller === profile.name)
+    ? posts.filter((post) => post.seller_id === profile.id)
     : [];
 
   const [showAddPost, setShowAddPost] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showEditPost, setShowEditPost] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
+  // ✅ Add Post
   const handleAddPost = async (newPost) => {
     try {
       const userData = JSON.parse(localStorage.getItem("userData"));
@@ -76,17 +77,10 @@ const Profile = () => {
         formData.append("image", newPost.image);
       }
 
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ": ", pair[1]);
-      }
-
       const savedPost = await createPost(formData);
-
-      // Inject category name into savedPost before adding
       savedPost.categoryName = categoryMap[savedPost.category];
 
-      addPost(savedPost, { name: userData.username });
-
+      addPost(savedPost);
       setShowAddPost(false);
     } catch (error) {
       console.error("Failed to post product:", error);
@@ -94,11 +88,28 @@ const Profile = () => {
     }
   };
 
+  // ✅ View Details
   const handleViewDetails = (product) => {
     setSelectedProduct(product);
     setShowDetailModal(true);
   };
 
+  // ✅ Edit Post
+  const handleEditPost = (product) => {
+    setSelectedProduct(product);
+    setShowEditPost(true);
+  };
+
+  // ✅ Delete Post
+  const handleDeletePost = async (postId) => {
+    try {
+      await deletePost(postId); // from PostsContext
+    } catch (err) {
+      console.error("Failed to delete post:", err);
+    }
+  };
+
+  // ✅ Edit Profile
   const handleEditProfile = () => {
     setShowEditProfile(true);
   };
@@ -124,10 +135,7 @@ const Profile = () => {
       }));
 
       const userData = JSON.parse(localStorage.getItem("userData")) || {};
-      localStorage.setItem(
-        "userData",
-        JSON.stringify({ ...userData, ...data })
-      );
+      localStorage.setItem("userData", JSON.stringify({ ...userData, ...data }));
 
       setShowEditProfile(false);
     } catch (err) {
@@ -183,11 +191,11 @@ const Profile = () => {
               {userPosts.map((post) => (
                 <ProductCard
                   key={post.id}
-                  product={{
-                    ...post,
-                    categoryName: categoryMap[post.category], // ✅ inject name
-                  }}
+                  product={post}
                   onViewDetails={handleViewDetails}
+                  onEdit={handleEditPost}
+                  onDelete={handleDeletePost}
+                  currentUserId={profile.id}   // ✅ pass logged-in user ID
                 />
               ))}
             </div>
@@ -214,6 +222,15 @@ const Profile = () => {
         onClose={() => setShowDetailModal(false)}
         onUpdate={(updatedProduct) => setSelectedProduct(updatedProduct)}
       />
+
+      {/* ✅ Edit Post Modal */}
+      {showEditPost && selectedProduct && (
+        <EditPost
+          product={selectedProduct}
+          onClose={() => setShowEditPost(false)}
+          onSubmit={(id, updatedData) => updatePost(id, updatedData)}
+        />
+      )}
     </div>
   );
 };

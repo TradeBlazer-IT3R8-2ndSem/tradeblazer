@@ -4,15 +4,17 @@ import ProductCard from "../../components/ui/ProductCard";
 import CategoryBox from "../../components/ui/CategoryBox";
 import ProductDetail from "./ProductDetail";
 import "../../styles/pages/dashboard/Home.css";
-import { getCategories, getPosts } from "../../services/api";
+import { getCategories, getBestSellingPosts } from "../../services/api";
 import { PostsContext } from "../../context/PostsContext";
 
 const Home = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [categories, setCategories] = useState([{ id: 0, name: "Recommended" }]);
   const [selectedCategory, setSelectedCategory] = useState("Recommended");
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [bestSelling, setBestSelling] = useState([]);
 
   const { posts } = useContext(PostsContext);
 
@@ -25,50 +27,49 @@ const Home = () => {
     }
   }, [navigate]);
 
-  const categories = [
-    "Recommended",
-    "Electronics",
-    "Fashion",
-    "Home & Living",
-    "Sports",
-    "Beauty",
-    "Gifts",
-  ];
+  // ✅ Fetch Best Selling
+  useEffect(() => {
+    const fetchBestSelling = async () => {
+      try {
+        const data = await getBestSellingPosts();
+        setBestSelling(data);
+      } catch (err) {
+        console.error("Failed to fetch best selling:", err);
+      }
+    };
+    fetchBestSelling();
+  }, []);
 
-  const bestSelling = [
-    { id: 1, name: "Ferrero Bouquet", price: "1,100", category: "Gifts", image: "/public/ferrero.jpg", seller: "TradeBlazer" },
-    { id: 2, name: "Keychain", price: "600", category: "Gifts", image: "/public/keychain.jpg", seller: "TradeBlazer" },
-    { id: 3, name: "Plush Teddy Bear", price: "600", category: "Gifts", image: "/public/teddybear.jpg", seller: "TradeBlazer" },
-    { id: 4, name: "Flower Bouquet", price: "500", category: "Gifts", image: "/public/flowerbouquet.jpg", seller: "TradeBlazer" },
-    { id: 5, name: "Chocolate Box", price: "400", category: "Gifts", image: "/public/chocolatebox.jpg", seller: "TradeBlazer" },
-  ];
-
-  const hardcodedProducts = [
-    { id: 6, name: "Hair Clamps", price: "25", category: "Fashion", image: "/public/hairclamps.jpg", seller: "TradeBlazer" },
-    { id: 7, name: "Socks", price: "50", category: "Fashion", image: "/public/socks.jpg", seller: "TradeBlazer" },
-    { id: 8, name: "Phone Case", price: "150", category: "Electronics", image: "/public/phonecase.jpg", seller: "TradeBlazer" },
-    { id: 9, name: "Hand Bag", price: "30", category: "Gifts", image: "/public/handbag.jpg", seller: "TradeBlazer" },
-    { id: 10, name: "Wallet", price: "200", category: "Fashion", image: "/public/wallet.jpg", seller: "TradeBlazer" },
-    { id: 11, name: "Backpack", price: "500", category: "Fashion", image: "/public/backpack.jpg", seller: "TradeBlazer" },
-    { id: 12, name: "Sunglasses", price: "300", category: "Fashion", image: "/public/sunglasses.jpg", seller: "TradeBlazer" },
-  ];
+  // ✅ Fetch Categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories(); // [{id:1, name:"Electronics"}, ...]
+        setCategories([{ id: 0, name: "Recommended" }, ...data]);
+      } catch (err) {
+        console.error("Failed to fetch categories:", err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const userPosts = posts.map(post => ({
     id: post.id,
-    name: post.title,
+    title: post.title,
     price: post.price,
-    category: post.category,
+    categoryName: post.categoryName,
     image: post.image,
     description: post.description,
     seller: post.seller,
+    seller_id: post.seller_id,
   }));
 
-  const allProducts = [...hardcodedProducts, ...userPosts];
+  const allProducts = [ ...userPosts]; 
 
   const filteredProducts =
     selectedCategory === "Recommended"
       ? allProducts
-      : allProducts.filter((product) => product.category === selectedCategory);
+      : allProducts.filter((product) => product.categoryName === selectedCategory);
 
   const handleViewDetails = (product) => {
     setSelectedProduct(product);
@@ -77,12 +78,12 @@ const Home = () => {
 
   return (
     <div className="home-wrapper">
-
       <div className="announcement">
-        <img src="public/banner.gif" alt="Announcement Banner" />
+        <img src="/banner.gif" alt="Announcement Banner" />
       </div>
 
       <div className="home-container">
+        {/* ✅ Best Selling Section */}
         <section className="section">
           <h2>Top 5 Best Selling</h2>
           <div className="product-row">
@@ -92,27 +93,31 @@ const Home = () => {
           </div>
         </section>
 
+        {/* ✅ Categories Section */}
         <section className="section">
           <h2>Categories</h2>
           <div className="category-row">
-            {categories.map((cat, index) => (
+            {categories.map((cat) => (
               <CategoryBox
-                key={index}
-                name={cat}
-                onClick={() => setSelectedCategory(cat)}
-                isActive={selectedCategory === cat}
+                key={cat.id}
+                name={cat.name}
+                onClick={() => setSelectedCategory(cat.name)}
+                isActive={selectedCategory === cat.name}
               />
             ))}
           </div>
         </section>
 
+        {/* ✅ Products Section */}
         <section className="section">
           <h2>Products</h2>
           <div className="product-grid">
             {filteredProducts.length === 0 ? (
               <p className="no-products">No products available in this category.</p>
             ) : (
-              filteredProducts.map((item) => <ProductCard key={item.id} product={item} onViewDetails={handleViewDetails} />)
+              filteredProducts.map((item) => (
+                <ProductCard key={item.id} product={item} onViewDetails={handleViewDetails} />
+              ))
             )}
           </div>
         </section>
