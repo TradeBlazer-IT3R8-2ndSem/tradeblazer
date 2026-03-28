@@ -1,14 +1,14 @@
 from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import ChatRoom, Message
 from .serializers import ChatRoomSerializer, MessageSerializer
 
 class ChatRoomViewSet(viewsets.ModelViewSet):
-    queryset = ChatRoom.objects.all()   # ✅ added queryset
+    queryset = ChatRoom.objects.all()
     serializer_class = ChatRoomSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         user = self.request.user
@@ -33,9 +33,9 @@ class ChatRoomViewSet(viewsets.ModelViewSet):
 
 
 class MessageViewSet(viewsets.ModelViewSet):
-    queryset = Message.objects.all()   # ✅ added queryset
+    queryset = Message.objects.all()
     serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         chatroom_id = self.request.query_params.get("chatroom")
