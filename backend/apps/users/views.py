@@ -1,25 +1,28 @@
-from rest_framework.decorators import api_view
+from django.contrib.auth import authenticate
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status, viewsets
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 
 from .models import User
-from .serializers import UserSerializer
+from .serializers import UserSerializer, CustomTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
 
-# 🔥 USER VIEWSET (NOW SUPPORTS IMAGE UPLOAD)
+# 🔥 USER VIEWSET (supports image upload)
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
+    parser_classes = (JSONParser, MultiPartParser, FormParser)
 
-
-    parser_classes = (JSONParser,MultiPartParser, FormParser)
 
 # -----------------------
 # Register user
 # -----------------------
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def register_user(request):
     data = request.data
 
@@ -34,15 +37,16 @@ def register_user(request):
     if User.objects.filter(email=data['email']).exists():
         return Response({"error": "Email already registered"}, status=400)
 
-    user = User.objects.create(
+    user = User(
         username=data['username'],
         email=data['email'],
-        password=data['password'],  # plain text
         student_id=data['student_id'],
         phone_number=data['phone_number'],
         address=data['address'],
         department=data['department']
     )
+    user.set_password(data['password'])
+    user.save()
 
     serializer = UserSerializer(user)
     user_data = serializer.data
@@ -52,9 +56,10 @@ def register_user(request):
 
 
 # -----------------------
-# Login user
+# Login user (manual endpoint)
 # -----------------------
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def login_user(request):
     data = request.data
     email = data.get('email')
@@ -66,16 +71,30 @@ def login_user(request):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    try:
-        user = User.objects.get(email=email, password=password)
-    except User.DoesNotExist:
+    # ✅ Use username=email because USERNAME_FIELD = "email"
+    user = authenticate(request, username=email, password=password)
+    if user is None:
         return Response(
             {"error": "Invalid email or password"},
             status=status.HTTP_400_BAD_REQUEST
         )
 
+    # ✅ Generate JWT tokens
+    refresh = RefreshToken.for_user(user)
+    access = str(refresh.access_token)
+
     serializer = UserSerializer(user)
     user_data = serializer.data
     user_data['role'] = 'admin' if user.is_staff else 'user'
 
-    return Response({"user": user_data}, status=status.HTTP_200_OK)
+    return Response({
+        "user": user_data,
+        "access": access,
+        "refresh": str(refresh)
+        }, status=status.HTTP_200_OK)
+
+# -----------------------
+# Custom JWT Login (email-based)
+# -----------------------
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -10,3 +11,5 @@ class UserSerializer(serializers.ModelSerializer):
             'phone_number', 'address', 'department',
             'profile_image', 'created_at', 'password'
         ]
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = 'email'

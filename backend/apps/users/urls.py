@@ -7,6 +7,6 @@ router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),   # 🔥 REQUIRED
-    path('register/', register_user),
+    path('register/', register_user, name='register_user'),
     path('login/', login_user),
 ]

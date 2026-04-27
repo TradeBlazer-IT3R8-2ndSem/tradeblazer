@@ -1,12 +1,22 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+    TokenVerifyView,
+)
 from django.conf import settings
 from django.conf.urls.static import static
 
+# ✅ import your custom view
+from apps.users.views import CustomTokenObtainPairView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/token/', obtain_auth_token),
+    # JWT endpoints (email-based)
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    # App endpoints
     path('api/', include('apps.users.urls')),
     path('api/', include('apps.posts.urls')),
     path('api/', include('apps.favorites.urls')),

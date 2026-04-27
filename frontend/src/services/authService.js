@@ -1,19 +1,20 @@
-import axios from "axios";
-import api from "./api";
+// authService.js
+import axios from 'axios';
 
-export const login = async (username, password) => {
-  const res = await axios.post("http://127.0.0.1:8000/api/token/", {
+const API_URL = 'http://localhost:8000/api'; // adjust if needed
+
+// Login: get access + refresh tokens
+export async function login(username, password) {
+  const response = await axios.post(`${API_URL}/token/`, {
     username,
     password,
   });
-  const { token } = res.data;
-  localStorage.setItem("token", token); // ✅ store token
-  return token;
-};
+  
+  const { access, refresh } = response.data;
 
-export const register = async (data) => {
-  const res = await api.post("/users/", data);
-  return res.data;
-};
+  // Store tokens (localStorage for web, AsyncStorage for React Native)
+  localStorage.setItem('access', access);
+  localStorage.setItem('refresh', refresh);
 
-export default { getToken, register };
+  return access;
+}

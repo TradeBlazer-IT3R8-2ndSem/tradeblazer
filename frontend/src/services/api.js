@@ -1,3 +1,4 @@
+// api.js
 import axios from "axios";
 
 const api = axios.create({
@@ -5,29 +6,59 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-api.interceptors.request.use((config) => {
-  const username = localStorage.getItem("username");
-  const password = localStorage.getItem("password");
-  if (username && password) {
-    const token = btoa(`${username}:${password}`); // base64 encode
-    config.headers.Authorization = `Basic ${token}`;
+// Attach JWT access token to every request
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("access");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Handle expired access token automatically
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      const refresh = localStorage.getItem("refresh");
+      if (refresh) {
+        try {
+          const res = await axios.post("http://127.0.0.1:8000/api/token/refresh/", {
+            refresh,
+          });
+          const newAccess = res.data.access;
+
+          localStorage.setItem("access", newAccess);
+          originalRequest.headers.Authorization = `Bearer ${newAccess}`;
+
+          return api(originalRequest);
+        } catch (err) {
+          // Refresh failed → force logout
+          localStorage.removeItem("access");
+          localStorage.removeItem("refresh");
+          window.location.href = "/login";
+        }
+      }
+    }
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
-
+// 🔑 Login: obtain access + refresh tokens
 export const login = async (username, password) => {
   try {
-    const res = await api.post("/api-token-auth/", {
-      username,
-      password,
-    });
-    const token = res.data.token;
+    const res = await api.post("/token/", { username, password });
+    const { access, refresh } = res.data;
 
-    localStorage.setItem("userData", JSON.stringify({
-      username,
-      token,
-    }));
+    localStorage.setItem("access", access);
+    localStorage.setItem("refresh", refresh);
 
     return res.data;
   } catch (error) {
@@ -36,10 +67,18 @@ export const login = async (username, password) => {
   }
 };
 
+// 🚪 Logout: clear tokens
+export const logout = () => {
+  localStorage.removeItem("access");
+  localStorage.removeItem("refresh");
+};
+
+// Example API calls
 export const getCategories = async () => {
   const res = await api.get("/categories/");
   return res.data;
 };
+
 export const getBestSellingPosts = async () => {
   const res = await api.get("/posts/best-selling/");
   return res.data;
@@ -50,31 +89,18 @@ export const getPosts = async () => {
   return res.data;
 };
 
-// CREATE POST
 export const createPost = async (formData) => {
-  const res = await fetch("http://127.0.0.1:8000/api/posts/", {
-    method: "POST",
-    headers: {
-      Authorization: `Token ${localStorage.getItem("token")}`,
-    },
-    body: formData,
+  const res = await api.post("/posts/", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
   });
-
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Server error ${res.status}: ${text}`);
-  }
-
-  return await res.json();
+  return res.data;
 };
 
-// ✅ Update Post
 export const updatePostApi = async (postId, updatedData) => {
   const res = await api.patch(`/posts/${postId}/`, updatedData);
   return res.data;
 };
 
-// ✅ Delete Post
 export const deletePostApi = async (postId) => {
   await api.delete(`/posts/${postId}/`);
 };
