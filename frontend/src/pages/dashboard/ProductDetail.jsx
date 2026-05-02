@@ -49,7 +49,7 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
 
   const handleEditClick = () => {
     setEditFormData({
-      title: product.title,   // ✅ use title instead of name
+      title: product.title,
       price: product.price,
       category: product.category,
       description: product.description,
