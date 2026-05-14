@@ -1,6 +1,6 @@
 from rest_framework import viewsets, generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from .models import Post, Category, User
 from .serializers import PostSerializer, CategorySerializer
 
@@ -13,7 +13,7 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get_serializer_context(self):
         return {"request": self.request}

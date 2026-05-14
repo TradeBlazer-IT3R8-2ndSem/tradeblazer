@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../styles/components/ui/EditPost.css"; // ✅ import CSS
+import "../../styles/components/ui/EditPost.css";
 
 const EditPost = ({ product, onClose, onSubmit }) => {
   const [title, setTitle] = useState(product.title);
@@ -11,17 +11,25 @@ const EditPost = ({ product, onClose, onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("price", price);
-    formData.append("category", category);
-
     if (image) {
+      // If image is present, use FormData
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("category", category);
       formData.append("image", image);
+      onSubmit(product.id, formData);
+    } else {
+      // If no image, use JSON
+      const data = {
+        title,
+        description,
+        price,
+        category
+      };
+      onSubmit(product.id, data);
     }
-
-    onSubmit(product.id, formData);
     onClose();
   };
 

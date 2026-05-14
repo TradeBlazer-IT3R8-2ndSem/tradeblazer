@@ -25,20 +25,23 @@ export const createPost = async (formData) => {
 
 // UPDATE POST
 export const updatePost = async (id, post) => {
-  const formData = new FormData();
+  let data, headers;
+  if (post.image && post.image instanceof File) {
+    // Use FormData for file uploads
+    data = new FormData();
+    Object.keys(post).forEach((key) => {
+      if (post[key] !== undefined && post[key] !== null) {
+        data.append(key, post[key]);
+      }
+    });
+    headers = { "Content-Type": "multipart/form-data" };
+  } else {
+    // Use JSON for non-file updates
+    data = JSON.stringify(post);
+    headers = { "Content-Type": "application/json" };
+  }
 
-  Object.keys(post).forEach((key) => {
-    if (post[key] !== undefined && post[key] !== null) {
-      formData.append(key, post[key]);
-    }
-  });
-
-  const res = await api.put(`/posts/${id}/`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-
+  const res = await api.put(`/posts/${id}/`, data, { headers });
   return res.data;
 };
 

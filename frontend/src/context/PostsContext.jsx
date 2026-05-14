@@ -30,7 +30,7 @@ export const PostsProvider = ({ children }) => {
 
       const normalized = rawPosts.map(post => ({
         ...post,
-        // ✅ Always provide categoryName
+        // ✅
         categoryName:
           post.category_name || categoryMap[post.category] || "Uncategorized",
       }));
@@ -60,7 +60,6 @@ export const PostsProvider = ({ children }) => {
     }
   };
 
-  // ✅ Update Post (calls backend PATCH)
   const updatePost = async (postId, updatedData) => {
     try {
       const updatedPost = await updatePostApi(postId, updatedData);
