@@ -298,7 +298,7 @@ docker compose -f docker-compose.prod.yml up -d
 
 ## License
 
-This project is developed for educational purposes at [University of Science and Technology of Southern Philippines].
+This project is developed for educational purposes at University of Science and Technology of Southern Philippines.
 
 ## Learning Outcomes
 
