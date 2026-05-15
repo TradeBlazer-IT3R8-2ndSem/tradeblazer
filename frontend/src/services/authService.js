@@ -12,7 +12,6 @@ export async function login(username, password) {
   
   const { access, refresh } = response.data;
 
-  // Store tokens (localStorage for web, AsyncStorage for React Native)
   localStorage.setItem('access', access);
   localStorage.setItem('refresh', refresh);
 

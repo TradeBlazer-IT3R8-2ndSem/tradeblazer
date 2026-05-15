@@ -1,17 +1,12 @@
 import React, { createContext, useState, useEffect } from 'react';
-import {
-  getPosts,
-  createPost,
-  updatePostApi,
-  deletePostApi
-} from '../services/api';
+import {getPosts, createPost, updatePostApi, deletePostApi} 
+from '../services/api';
 
 export const PostsContext = createContext();
 
 export const PostsProvider = ({ children }) => {
   const [posts, setPosts] = useState([]);
 
-  // Map category IDs to names
   const categoryMap = {
     1: "Electronics",
     2: "Gifts",
@@ -23,14 +18,12 @@ export const PostsProvider = ({ children }) => {
     8: "Accessories",
   };
 
-  // Fetch posts from backend on mount
   useEffect(() => {
     const fetchPosts = async () => {
       const rawPosts = await getPosts();
 
       const normalized = rawPosts.map(post => ({
         ...post,
-        // ✅
         categoryName:
           post.category_name || categoryMap[post.category] || "Uncategorized",
       }));
@@ -50,7 +43,6 @@ export const PostsProvider = ({ children }) => {
     setPosts(prev => [...prev, normalized]);
   };
 
-  // ✅ Delete Post (calls backend DELETE)
   const deletePost = async (postId) => {
     try {
       await deletePostApi(postId);

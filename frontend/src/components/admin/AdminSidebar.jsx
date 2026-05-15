@@ -29,7 +29,7 @@ export default function AdminSidebar({ activePanel, setActivePanel }) {
       description: 'View and manage user/product reports'
     },
     {
-      id: 'home',   // ✅ new item
+      id: 'home',
       label: 'Go to Home',
       description: 'Return to main site'
     }

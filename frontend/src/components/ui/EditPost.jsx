@@ -12,7 +12,6 @@ const EditPost = ({ product, onClose, onSubmit }) => {
     e.preventDefault();
 
     if (image) {
-      // If image is present, use FormData
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
@@ -21,7 +20,6 @@ const EditPost = ({ product, onClose, onSubmit }) => {
       formData.append("image", image);
       onSubmit(product.id, formData);
     } else {
-      // If no image, use JSON
       const data = {
         title,
         description,

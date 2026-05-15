@@ -11,5 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
             'phone_number', 'address', 'department',
             'profile_image', 'created_at', 'password'
         ]
+        read_only_fields = ['id', 'created_at', 'password', 'username']
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     username_field = 'email'

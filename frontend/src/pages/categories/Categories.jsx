@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CategoryBox from '../../components/ui/CategoryBox';
 import ProductCard from '../../components/ui/ProductCard';
+import { getCategories, getPosts } from '../../services/api';
 import '../../styles/pages/categories/Categories.css';
 
 const Categories = () => {
@@ -13,26 +14,15 @@ const Categories = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
-
-        // Fetch categories
-        const catRes = await fetch("http://127.0.0.1:8000/api/categories/", {
-          headers: { Authorization: `Token ${token}` },
-        });
-        const catData = await catRes.json();
+        const catData = await getCategories();
         setCategories(catData);
 
-        // Fetch posts
-        const prodRes = await fetch("http://127.0.0.1:8000/api/posts/", {
-          headers: { Authorization: `Token ${token}` },
-        });
-        const prodData = await prodRes.json();
+        const prodData = await getPosts();
         setProducts(prodData);
       } catch (err) {
         console.error("Failed to fetch categories/products:", err);
       }
     };
-
     fetchData();
   }, []);
 

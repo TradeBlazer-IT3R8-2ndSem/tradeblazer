@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../styles/pages/auth/login.css";
+import "../../styles/pages/auth/Login.css";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -22,7 +22,6 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok && data.user.role === "user") {
-        // ✅ Save tokens + user info
         localStorage.setItem("access", data.access);
         localStorage.setItem("refresh", data.refresh);
         localStorage.setItem("userData", JSON.stringify(data.user));
@@ -52,7 +51,6 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok && data.user.role === "admin") {
-        // ✅ Save tokens + user info
         localStorage.setItem("access", data.access);
         localStorage.setItem("refresh", data.refresh);
         localStorage.setItem("userData", JSON.stringify(data.user));

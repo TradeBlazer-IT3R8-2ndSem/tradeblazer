@@ -1,11 +1,9 @@
-// api.js
 import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://127.0.0.1:8000/api",
 });
 
-// Attach JWT access token to every request
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("access");
@@ -17,7 +15,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Handle expired access token automatically
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -50,7 +47,6 @@ api.interceptors.response.use(
   }
 );
 
-// 🔑 Login: obtain access + refresh tokens
 export const login = async (username, password) => {
   try {
     const res = await api.post("/token/", { username, password });
@@ -66,7 +62,6 @@ export const login = async (username, password) => {
   }
 };
 
-// 🚪 Logout: clear tokens
 export const logout = () => {
   localStorage.removeItem("access");
   localStorage.removeItem("refresh");

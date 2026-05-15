@@ -37,11 +37,10 @@ const EditProfile = ({ isOpen, onClose, profile, onSubmit }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-
     if (file) {
       setFormData((prev) => ({
         ...prev,
-        profilePicture: URL.createObjectURL(file), // preview only
+        profilePicture: URL.createObjectURL(file),
         profileFile: file,
       }));
     }
@@ -56,7 +55,6 @@ const EditProfile = ({ isOpen, onClose, profile, onSubmit }) => {
     }
 
     const data = new FormData();
-    data.append("username", formData.name);
     data.append("email", formData.email);
     data.append("student_id", formData.studentId);
     data.append("phone_number", formData.number);
@@ -68,26 +66,6 @@ const EditProfile = ({ isOpen, onClose, profile, onSubmit }) => {
     }
 
     onSubmit(data, profile.id);
-  };
-
-  const updateProfile = async (formData, userId) => {
-    try {
-      const res = await fetch(`http://127.0.0.1:8000/api/users/${userId}/`, {
-        method: "PATCH",
-        body: formData,
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        console.error("Backend error:", data);
-        throw new Error(JSON.stringify(data));
-      }
-
-      console.log("Success:", data);
-    } catch (err) {
-      console.error("Failed to update profile:", err.message);
-    }
   };
 
   return (
@@ -102,12 +80,11 @@ const EditProfile = ({ isOpen, onClose, profile, onSubmit }) => {
         <h2>Edit Profile</h2>
         <form className="addpost-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Name *</label>
+            <label>Name (Display only)</label>
             <input
               name="name"
               value={formData.name}
-              onChange={handleChange}
-              required
+              disabled
             />
           </div>
 

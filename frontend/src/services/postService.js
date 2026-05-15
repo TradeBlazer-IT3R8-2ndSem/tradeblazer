@@ -1,12 +1,10 @@
 import api from "./api";
 
-// GET ALL POSTS
 export const listPosts = async () => {
   const res = await api.get("/posts/");
   return res.data;
 };
 
-// CREATE POST ✅ FIXED
 export const createPost = async (formData) => {
   try {
     const res = await fetch("http://127.0.0.1:8000/api/posts/", {
@@ -23,11 +21,9 @@ export const createPost = async (formData) => {
   }
 };
 
-// UPDATE POST
 export const updatePost = async (id, post) => {
   let data, headers;
   if (post.image && post.image instanceof File) {
-    // Use FormData for file uploads
     data = new FormData();
     Object.keys(post).forEach((key) => {
       if (post[key] !== undefined && post[key] !== null) {

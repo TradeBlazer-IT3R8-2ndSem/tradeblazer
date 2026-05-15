@@ -4,18 +4,37 @@ from rest_framework.response import Response
 from rest_framework import status, viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
-
 from .models import User
 from .serializers import UserSerializer, CustomTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.urls import reverse
+from django.core.mail import send_mail
+from django.conf import settings
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+import logging
 
-# 🔥 USER VIEWSET (supports image upload)
+logger = logging.getLogger(__name__)
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = (JSONParser, MultiPartParser, FormParser)
+
+    def update(self, request, *args, **kwargs):
+        try:
+            response = super().update(request, *args, **kwargs)
+            return response
+        except Exception as e:
+            logger.error(f"Update error: {str(e)}")
+            if hasattr(e, 'detail'):
+                return Response({"error": str(e.detail)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # -----------------------
@@ -43,16 +62,26 @@ def register_user(request):
         student_id=data['student_id'],
         phone_number=data['phone_number'],
         address=data['address'],
-        department=data['department']
+        department=data['department'],
+        is_active=False
     )
     user.set_password(data['password'])
     user.save()
+
+    token = default_token_generator.make_token(user)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    verify_url = request.build_absolute_uri(
+        reverse('verify-email', kwargs={'uidb64': uid, 'token': token})
+    )
+    subject = 'Verify your email'
+    message = f'Click the link to verify your email: {verify_url}'
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
 
     serializer = UserSerializer(user)
     user_data = serializer.data
     user_data['role'] = 'admin' if user.is_staff else 'user'
 
-    return Response({"user": user_data}, status=201)
+    return Response({"user": user_data, "detail": "Verification email sent. Please check your inbox."}, status=201)
 
 
 # -----------------------
@@ -71,7 +100,6 @@ def login_user(request):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    # ✅ Use username=email because USERNAME_FIELD = "email"
     user = authenticate(request, username=email, password=password)
     if user is None:
         return Response(
@@ -79,7 +107,6 @@ def login_user(request):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    # ✅ Generate JWT tokens
     refresh = RefreshToken.for_user(user)
     access = str(refresh.access_token)
 
@@ -98,3 +125,22 @@ def login_user(request):
 # -----------------------
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
+
+# -----------------------
+# Email verification endpoint   
+# -----------------------    
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def verify_email(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return Response({'message': 'Email verified! You can now log in.'}, status=200)
+    return Response({'error': 'Invalid or expired verification link.'}, status=400)

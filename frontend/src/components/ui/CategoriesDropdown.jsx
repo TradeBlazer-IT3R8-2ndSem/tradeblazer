@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { getCategories } from "../../services/api";
 
 const CategoriesDropdown = () => {
   const [open, setOpen] = useState(false);
@@ -8,17 +9,12 @@ const CategoriesDropdown = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const res = await fetch("http://127.0.0.1:8000/api/categories/", {
-          headers: { Authorization: `Token ${token}` },
-        });
-        const data = await res.json();
+        const data = await getCategories();
         setCategories(data);
       } catch (err) {
         console.error("Failed to fetch categories:", err);
       }
     };
-
     fetchCategories();
   }, []);
 

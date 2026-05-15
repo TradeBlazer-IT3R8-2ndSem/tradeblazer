@@ -5,7 +5,7 @@ import ProductCard from "../../components/ui/ProductCard";
 import AddPost from "../post/AddPost";
 import ProductDetail from "../dashboard/ProductDetail";
 import EditProfile from "./EditProfile";
-import EditPost from "../../components/ui/EditPost";   // ✅ new component
+import EditPost from "../../components/ui/EditPost";
 import { PostsContext } from "../../context/PostsContext";
 import { createPost } from "../../services/postService";
 
@@ -16,7 +16,6 @@ const Profile = () => {
 
   const { posts, addPost, deletePost, updatePost } = useContext(PostsContext);
 
-  // Map category IDs to names
   const categoryMap = {
     1: "Electronics",
     2: "Gifts",
@@ -28,7 +27,6 @@ const Profile = () => {
     8: "Accessories",
   };
 
-  // Fetch logged-in user
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (!userData) {
@@ -88,36 +86,38 @@ const Profile = () => {
     }
   };
 
-  // ✅ View Details
   const handleViewDetails = (product) => {
     setSelectedProduct(product);
     setShowDetailModal(true);
   };
 
-  // ✅ Edit Post
   const handleEditPost = (product) => {
     setSelectedProduct(product);
     setShowEditPost(true);
   };
 
-  // ✅ Delete Post
   const handleDeletePost = async (postId) => {
     try {
-      await deletePost(postId); // from PostsContext
+      await deletePost(postId);
     } catch (err) {
       console.error("Failed to delete post:", err);
     }
   };
 
-  // ✅ Edit Profile
   const handleEditProfile = () => {
     setShowEditProfile(true);
   };
 
   const handleUpdateProfile = async (formData, userId) => {
     try {
+      const token = localStorage.getItem('access');
+      const headers = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
       const res = await fetch(`http://127.0.0.1:8000/api/users/${userId}/`, {
         method: "PATCH",
+        headers,
         body: formData,
       });
 
@@ -195,7 +195,7 @@ const Profile = () => {
                   onViewDetails={handleViewDetails}
                   onEdit={handleEditPost}
                   onDelete={handleDeletePost}
-                  currentUserId={profile.id}   // ✅ pass logged-in user ID
+                  currentUserId={profile.id}
                 />
               ))}
             </div>

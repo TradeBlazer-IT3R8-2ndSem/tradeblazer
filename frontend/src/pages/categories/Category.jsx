@@ -14,18 +14,18 @@ const Category = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("access");
 
         // Fetch category info
         const catRes = await fetch(`http://127.0.0.1:8000/api/categories/${categoryId}/`, {
-          headers: { Authorization: `Token ${token}` },
+          headers: { Authorization: `Bearer ${token}` },
         });
         const catData = await catRes.json();
         setCategoryName(catData.name);
 
         // Fetch posts
         const prodRes = await fetch("http://127.0.0.1:8000/api/posts/", {
-          headers: { Authorization: `Token ${token}` },
+          headers: { Authorization: `Bearer ${token}` },
         });
         const prodData = await prodRes.json();
 

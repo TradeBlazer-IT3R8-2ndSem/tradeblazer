@@ -1,12 +1,13 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import UserViewSet, register_user, login_user
+from .views import UserViewSet, register_user, login_user, verify_email
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),   # 🔥 REQUIRED
+    path('', include(router.urls)),
     path('register/', register_user, name='register_user'),
     path('login/', login_user),
+    path('verify-email/<uidb64>/<token>/', verify_email, name='verify-email'),
 ]

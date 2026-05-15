@@ -7,7 +7,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ["id", "name", "created_at"]
 
 class PostSerializer(serializers.ModelSerializer):
-    seller = serializers.StringRelatedField(read_only=True)   # show username
+    seller = serializers.StringRelatedField(read_only=True)
     seller_id = serializers.IntegerField(source="seller.id", read_only=True)
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
     category_name = serializers.CharField(source="category.name", read_only=True)

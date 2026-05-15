@@ -23,12 +23,12 @@ const ReportUser = ({ isOpen, onClose, product }) => {
 
     try {
       const reportData = {
-        reporter: currentUser?.id,        // backend expects user IDs
-        reported_user: product.seller_id, // seller ID from product
-        reason: `${reason} - ${details}`, // combine reason + details
+        reporter: currentUser?.id,
+        reported_user: product.seller_id,
+        reason: `${reason} - ${details}`,
       };
 
-      await api.post("/reports/", reportData); // ✅ call backend
+      await api.post("/reports/", reportData);
 
       alert("Report submitted successfully!");
       onClose();

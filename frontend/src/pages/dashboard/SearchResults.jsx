@@ -12,9 +12,9 @@ const Search = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("access");
         const res = await fetch("http://127.0.0.1:8000/api/posts/", {
-          headers: { Authorization: `Token ${token}` },
+          headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
         setAllProducts(data);
