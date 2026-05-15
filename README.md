@@ -76,10 +76,10 @@ tradeblazer/
 │   ├── config/              # Django settings
 │   ├── manage.py            # Django CLI
 │   ├── requirements.txt     # Python dependencies
-│   ├── Dockerfile           # Backend container config
-│   └── .env                 # Environment variables
+│   └── Dockerfile           # Backend container config
 ├── nginx/
 │   └── default.conf         # Nginx configuration
+├── .env                     # Environment variables
 ├── docker-compose.yml       # Docker Compose config
 └── README.md                # This file
 ```
