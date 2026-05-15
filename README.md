@@ -2,7 +2,7 @@
 
 A modern peer-to-peer marketplace platform designed for university students to buy, sell, and trade products within their campus community. Built with React, Django, and Docker.
 
-## 🎯 Project Overview
+## Project Overview
 
 TradeBlazer is a full-stack web application that connects students in a secure, trusted environment to buy and sell products. The platform features real-time messaging, product discovery, user profiles, and admin oversight.
 
@@ -10,7 +10,7 @@ TradeBlazer is a full-stack web application that connects students in a secure, 
 
 **Solution:** A dedicated, verified marketplace where students can connect directly with peers.
 
-## ✨ Key Features
+## Key Features
 
 ### User Features
 - **🔐 Secure Authentication**: JWT-based authentication with email verification
@@ -33,7 +33,7 @@ TradeBlazer is a full-stack web application that connects students in a secure, 
 - **📱 Responsive Design**: Works on desktop, tablet, and mobile
 - **🛡️ Security**: CORS protection, JWT tokens, password hashing
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **React 19** - UI library
@@ -54,7 +54,7 @@ TradeBlazer is a full-stack web application that connects students in a secure, 
 - **Docker Compose** - Multi-container orchestration
 - **Nginx** - Web server/reverse proxy
 
-## 📋 Project Structure
+## Project Structure
 
 ```
 tradeblazer/
@@ -84,7 +84,7 @@ tradeblazer/
 └── README.md                # This file
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Docker & Docker Compose installed
@@ -131,7 +131,7 @@ docker compose exec backend python manage.py createsuperuser
 docker compose down
 ```
 
-## 📝 Usage
+## Usage
 
 ### User Registration
 1. Click "Register" on the login page
@@ -168,7 +168,7 @@ docker compose down
 3. Update information, upload profile picture
 4. Click "Save Changes"
 
-## 🔐 Security Features
+## Security Features
 
 - **Password Hashing**: Bcrypt for secure password storage
 - **JWT Tokens**: Stateless authentication
@@ -177,7 +177,7 @@ docker compose down
 - **User Authorization**: Only users can modify their own data
 - **Admin Oversight**: Admins can moderate content
 
-## 📊 API Endpoints
+## API Endpoints
 
 ### Authentication
 - `POST /api/register/` - Register new user
@@ -201,7 +201,7 @@ docker compose down
 - `POST /api/chat/` - Send message
 - `GET /api/chat/{conversation_id}/` - Get conversation
 
-## 🧪 Testing
+## Testing
 
 Run backend tests:
 ```bash
@@ -244,7 +244,7 @@ docker compose exec backend chmod -R 755 /var/www/media
 docker compose restart frontend
 ```
 
-## 📦 Environment Variables
+## Environment Variables
 
 Create a `.env` file in the root directory:
 
@@ -259,7 +259,7 @@ DEBUG=True
 ALLOWED_HOSTS=*
 ```
 
-## 🚢 Deployment
+## Deployment
 
 ### Production Checklist
 - [ ] Set `DEBUG=False` in Django settings
@@ -281,26 +281,26 @@ docker compose -f docker-compose.prod.yml build
 docker compose -f docker-compose.prod.yml up -d
 ```
 
-## 📚 Documentation
+## Documentation
 
 - [Django Documentation](https://docs.djangoproject.com/)
 - [React Documentation](https://react.dev)
 - [Docker Documentation](https://docs.docker.com/)
 - [JWT Authentication](https://jwt.io/)
 
-## 🤝 Team
+## Team
 
-- **Dals** - Project Lead, Frontend Development
-- **Shan** - Backend Development, Authentication
-- **Chin** - Database Design, Admin Features
-- **Cyp** - API Development, Product Management
-- **Jomar** - Search & Discovery, Frontend Features
+- **John Dalisay** - Project Lead, Backend Development, Authentication, API Development
+- **Shandie Brillantes** - Admin Features, Frontend Features
+- **Syntyche Carnaje** - Profile Management, Frontend Features
+- **Cypress Bullo** - Profile Management, Frontend Features
+- **Jomari Arsula** - Support and Settings, Frontend Features
 
-## 📄 License
+## License
 
-This project is developed for educational purposes at [Your University].
+This project is developed for educational purposes at [University of Science and Technology of Southern Philippines].
 
-## 🎓 Learning Outcomes
+## Learning Outcomes
 
 Through this project, the team learned:
 - Full-stack web development with React and Django
@@ -313,7 +313,7 @@ Through this project, the team learned:
 - Agile development practices
 - Team collaboration and version control
 
-## 🗺️ Future Enhancements
+## Future Enhancements
 
 - [ ] Payment gateway integration (e-wallet, credit card, Stripe)
 - [ ] Review and rating system for buyers/sellers
@@ -326,7 +326,7 @@ Through this project, the team learned:
 - [ ] Social features (follow sellers, wishlist)
 - [ ] Multi-language support
 
-## 📞 Support
+## Support
 
 For issues or questions:
 1. Check troubleshooting section above
