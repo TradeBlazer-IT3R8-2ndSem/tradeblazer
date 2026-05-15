@@ -13,25 +13,25 @@ TradeBlazer is a full-stack web application that connects students in a secure, 
 ## Key Features
 
 ### User Features
-- **🔐 Secure Authentication**: JWT-based authentication with email verification
-- **👤 User Profiles**: Complete profile management with profile picture upload
-- **📱 Product Posting**: Easy product listing with images, descriptions, and categories
-- **🔍 Search & Filter**: Real-time search and category-based product discovery
-- **💬 Direct Chat**: Buyer-seller communication through built-in messaging system
-- **📦 Product Management**: Edit, delete, and manage your listings
-- **🏪 Responsive Dashboard**: View all available products and sellers
+- **Secure Authentication**: JWT-based authentication with email verification
+- **User Profiles**: Complete profile management with profile picture upload
+- **Product Posting**: Easy product listing with images, descriptions, and categories
+- **Search & Filter**: Real-time search and category-based product discovery
+- **Direct Chat**: Buyer-seller communication through built-in messaging system
+- **Product Management**: Edit, delete, and manage your listings
+- **Responsive Dashboard**: View all available products and sellers
 
 ### Admin Features
-- **👥 User Management**: Monitor all users and their profiles
-- **📊 Platform Oversight**: View all products and transactions
-- **🛡️ Content Moderation**: Manage problematic listings and handle disputes
-- **📈 Analytics**: Track platform activity and user engagement
+- **User Management**: Monitor all users and their profiles
+- **Platform Oversight**: View all products and transactions
+- **Content Moderation**: Manage problematic listings and handle disputes
+- **Analytics**: Track platform activity and user engagement
 
 ### Technical Features
-- **🐳 Docker Containerization**: Easy deployment with Docker Compose
-- **🔄 Real-time Updates**: Hot reload for development
-- **📱 Responsive Design**: Works on desktop, tablet, and mobile
-- **🛡️ Security**: CORS protection, JWT tokens, password hashing
+- **Docker Containerization**: Easy deployment with Docker Compose
+- **Real-time Updates**: Hot reload for development
+- **Responsive Design**: Works on desktop, tablet, and mobile
+- **Security**: CORS protection, JWT tokens, password hashing
 
 ## Tech Stack
 
@@ -208,7 +208,7 @@ Run backend tests:
 docker compose exec backend python manage.py test
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Port already in use
 ```bash
