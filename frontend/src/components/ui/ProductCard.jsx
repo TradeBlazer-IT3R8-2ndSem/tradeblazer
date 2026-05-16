@@ -5,12 +5,15 @@ import "../../styles/components/ui/ProductCard.css";
 const ProductCard = ({ product, onViewDetails, onEdit, onDelete, currentUserId }) => {
   const { favorites, toggleFavorite } = useContext(FavoritesContext);
 
-  const isLiked = favorites.some((p) => p.id === product.id);
+  const isLiked = favorites.some(p => p.id === product.id);
+
+  // ✅ Safe comparison — handles number vs string mismatch
+  const isOwner = currentUserId && product.seller_id &&
+    String(product.seller_id) === String(currentUserId);
 
   const handleDeleteClick = () => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this post?");
-    if (confirmDelete && onDelete) {
-      onDelete(product.id);
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      if (onDelete) onDelete(product.id);
     }
   };
 
@@ -31,7 +34,6 @@ const ProductCard = ({ product, onViewDetails, onEdit, onDelete, currentUserId }
 
       <div className="card-content">
         <span className="category-tag">{product.categoryName}</span>
-
         <h3>{product.title}</h3>
         <p className="price">₱{product.price}</p>
 
@@ -40,29 +42,9 @@ const ProductCard = ({ product, onViewDetails, onEdit, onDelete, currentUserId }
             className="view-btn"
             onClick={() => onViewDetails && onViewDetails(product)}
           >
-            👁️ View
+            View
           </button>
 
-          {product.seller_id === currentUserId && (
-            <>
-              {onEdit && (
-                <button
-                  className="edit-btn"
-                  onClick={() => onEdit(product)}
-                >
-                  ✏️ Edit
-                </button>
-              )}
-              {onDelete && (
-                <button
-                  className="delete-btn"
-                  onClick={handleDeleteClick}
-                >
-                  🗑️ Delete
-                </button>
-              )}
-            </>
-          )}
         </div>
       </div>
     </div>

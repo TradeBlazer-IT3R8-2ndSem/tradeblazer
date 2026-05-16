@@ -16,17 +16,16 @@ const EditPost = ({ product, onClose, onSubmit }) => {
       formData.append("title", title);
       formData.append("description", description);
       formData.append("price", price);
-      formData.append("category", category);
+      formData.append("category", Number(category));
       formData.append("image", image);
       onSubmit(product.id, formData);
     } else {
-      const data = {
+      onSubmit(product.id, {
         title,
         description,
         price,
-        category
-      };
-      onSubmit(product.id, data);
+        category: Number(category),
+      });
     }
     onClose();
   };
@@ -41,6 +40,7 @@ const EditPost = ({ product, onClose, onSubmit }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
+            required
           />
 
           <label>Description</label>
@@ -56,6 +56,7 @@ const EditPost = ({ product, onClose, onSubmit }) => {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             placeholder="Price"
+            required
           />
 
           <label>Category</label>
@@ -73,7 +74,7 @@ const EditPost = ({ product, onClose, onSubmit }) => {
             <option value={8}>Accessories</option>
           </select>
 
-          <label>Image</label>
+          <label>Image (optional)</label>
           <input
             type="file"
             accept="image/*"

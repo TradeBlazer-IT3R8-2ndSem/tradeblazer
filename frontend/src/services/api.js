@@ -91,7 +91,12 @@ export const createPost = async (formData) => {
 };
 
 export const updatePostApi = async (postId, updatedData) => {
-  const res = await api.patch(`/posts/${postId}/`, updatedData);
+  const isFormData = updatedData instanceof FormData;
+  const res = await api.patch(`/posts/${postId}/`, updatedData, {
+    headers: isFormData
+      ? { "Content-Type": "multipart/form-data" }
+      : { "Content-Type": "application/json" },
+  });
   return res.data;
 };
 

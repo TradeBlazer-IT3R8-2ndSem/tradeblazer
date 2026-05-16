@@ -32,7 +32,7 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
   if (!isOpen || !product) return null;
 
   const isLiked = favorites.some(p => p.id === product.id);
-  const isOwner = currentUser && product.seller === currentUser.name;
+  const isOwner = currentUser && String(product.seller_id) === String(currentUser.id);
 
   const handleChatSeller = () => {
     if (product.seller) {
@@ -84,7 +84,6 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
     });
 
     if (onUpdate) onUpdate(updatedProduct);
-
     setIsEditMode(false);
   };
 
@@ -99,7 +98,7 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
         <button className="close-btn" onClick={onClose}>✕</button>
         
         {isEditMode && editFormData ? (
-          <EditProductCard 
+          <EditProductCard
             editFormData={editFormData}
             onEditChange={handleEditChange}
             onEditSubmit={handleEditSubmit}
@@ -109,13 +108,11 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
           <div className="product-detail-content">
             {/* IMAGE */}
             <div className="product-image-container">
-              <img 
-                src={product.image || 'https://via.placeholder.com/300'} 
-                alt={product.title} 
-                className="product-image" 
+              <img
+                src={product.image || 'https://via.placeholder.com/300'}
+                alt={product.title}
+                className="product-image"
               />
-
-              {/* FAVORITE */}
               <button
                 className={`favorite-btn ${isLiked ? 'active' : ''}`}
                 onClick={() => toggleFavorite(product)}
@@ -134,7 +131,6 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
                 <p className="seller">Seller: {product.seller}</p>
               )}
 
-              {/* ✅ Show category name */}
               <p className="category">
                 Category: {product.categoryName || "Uncategorized"}
               </p>
@@ -147,13 +143,13 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
 
               {/* ACTIONS */}
               <div className="product-actions">
+                {/* ✅ Non-owner sees Chat Seller and Report */}
                 {!isOwner && (
                   <>
                     <button className="chat-btn" onClick={handleChatSeller}>
                       Chat Seller
                     </button>
-
-                    <button 
+                    <button
                       className="report-btn"
                       onClick={() => setShowReport(true)}
                     >
@@ -161,30 +157,24 @@ const ProductDetail = ({ product, isOpen, onClose, onUpdate }) => {
                     </button>
                   </>
                 )}
+
+                {/* ✅ Owner sees Edit and Delete */}
+                {isOwner && (
+                  <>
+                    <button className="chat-btn" onClick={handleEditClick}>
+                      Edit
+                    </button>
+                    <button className="report-btn" onClick={handleDelete}>
+                      Delete
+                    </button>
+                  </>
+                )}
               </div>
             </div>
-
-            {/* OWNER ACTIONS */}
-            {isOwner && (
-              <div className="bottom-product-actions">
-                <button 
-                  className="icon-btn edit-icon-btn" 
-                  onClick={handleEditClick}
-                >
-                  ✏️
-                </button>
-
-                <button 
-                  className="icon-btn delete-icon-btn" 
-                  onClick={handleDelete}
-                >
-                  🗑️
-                </button>
-              </div>
-            )}
           </div>
         )}
       </div>
+
       <ReportUser
         isOpen={showReport}
         onClose={() => setShowReport(false)}
